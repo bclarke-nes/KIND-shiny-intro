@@ -15,7 +15,7 @@ ui <- fluidPage(
                ),
                choiceValues = list("angry", "happy", "sad")
   ), 
-  textInput("name", "Text message", value="Your name"),
+  textInput("name", "Your name", value=""),
   sliderInput("date", "This date", min=ymd("2000-01-01"), max=ymd("2050-12-31"), value=dmy("02/02/2023")),
   selectInput("state", "Choose a state:",
               list(`East Coast` = list("NY", "NJ", "CT"),
@@ -31,7 +31,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   output$message <- renderText({
-    paste("The people follow him, he is ", input$rb)})
+    paste("Your mood is ", input$rb)})
   
   output$name <- renderText(glue("Your name is {input$name}, which contains {nchar(input$name)} characters."))
   
