@@ -1,8 +1,3 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
 ![](slides/KLN_banner_v04_700.png)
 ================
 Brendan Clarke
