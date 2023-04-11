@@ -5,7 +5,7 @@ p_load(tidyverse, lubridate, glue, ggrepel)
 # this script will either read processed data from rds files, or create them using s03_data.R if they do not exist
 # it then contains functions to produce the graphs used in the session 3 and session 4 dashboards
 
-source_files <- c("data/data.rds", "data/boards.rds", "data/standardised_data.rds", "data/standardised_data_national.rds")
+source_files <- c("../data/data.rds", "../data/boards.rds", "data/standardised_data.rds", "data/standardised_data_national.rds")
 
 if(all(file.exists(source_files))){
   

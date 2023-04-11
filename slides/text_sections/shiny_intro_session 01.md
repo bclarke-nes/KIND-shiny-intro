@@ -6,14 +6,16 @@
 + Assumes basic familiarity with R and Posit/Rstudio
 
 ## Set-up
-+ (now) Posit Cloud account
-+ (now) new project
-+ (now) [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
-+ (later sessions) pre-packed project files on GitHub
-+ (later) [Mastering Shiny](https://mastering-shiny.org/index.html)
+Please make a new empty project in Posit
+
+### Helpful resources
++ [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
++ [Mastering Shiny](https://mastering-shiny.org/index.html)
 
 ## This session
-+ familiarisation, terminology, R vs Shiny
++ basic functions
++ R vs Shiny
++ reactive programming
 + milestones
   + app.R
   + hello world
@@ -30,6 +32,8 @@
   + [NTI dashboard](https://scotland.shinyapps.io/nhs-prescribing-nti/)
   
 * Quick demo: `shiny_intro_s01_demo.R`
+
+(MILESTONE 01)
 
 ## Shiny vs R (1)
 
@@ -61,11 +65,11 @@ Shiny is **declarative** - "here are our goals and constraints..."
 
 :::
 
-(MILESTONE 1)
+(MILESTONE 02)
 
 ![](..//images//image-2077227059.png){fig-align="center"}
 
-(MILESTONE 02)
+(MILESTONE 03)
 
 Note the `output$message` - this is how we pass the body of the message to the `textOutput` part of the UI
 
@@ -84,16 +88,16 @@ One file or several?
   + `input$x` and `output$x` syntax
   + pairs of functions to pass things (graphs, text) between server and UI 
 
-(MILESTONE 03)
+(MILESTONE 04)
 
 + `renderText` to pass the output of the standard R code lines 10-12 to `output$mean_att`
 + `textOutput("mean_att")` to insert that output in the UI. `container=span` keeps text inline
 
-(MILESTONE 04)
+(MILESTONE 05)
 
 + `renderPlot` to pass the graph to `plotOutput`
 
-(MILESTONE 05)
+(MILESTONE 06)
 
 something else here
 

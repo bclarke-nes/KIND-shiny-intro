@@ -1,5 +1,24 @@
 library(pacman)
 p_load(shiny, shinydashboard, tidyverse, plotly)
+source("s04.R", local = TRUE)
+
+# source_files <- c("data/data.rds", "data/boards.rds", "data/standardised_data.rds", "data/standardised_data_national.rds")
+# 
+# if(all(file.exists(source_files))){
+#   
+#   data <- read_rds("data/data.rds")
+#   boards <- read_rds("data/boards.rds")
+#   standardised_data <- read_rds("data/standardised_data.rds")
+#   standardised_data_national <- read_rds("data/standardised_data_national.rds")
+#   
+# } else {
+#   source("R//s03_data.R", local=TRUE)
+#   data <- read_rds("data/data.rds")
+#   boards <- read_rds("data/boards.rds")
+#   standardised_data <- read_rds("data/standardised_data.rds")
+#   standardised_data_national <- read_rds("data/standardised_data_national.rds")
+# }
+
 
 ui <- dashboardPage(
   dashboardHeader(title = "Delayed discharge dashboard", titleWidth = 350),
@@ -197,8 +216,8 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output, session) {
-  isolate(source("R//s04.R", local = TRUE))
-  # source("..//R//s04.R", local = TRUE)
+
+  isolate(source("s04.R", local=T))
   
   output$graph <- renderPlot(discharge_graph(input$data))
   
