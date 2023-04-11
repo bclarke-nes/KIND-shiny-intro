@@ -1,6 +1,6 @@
 install.packages(setdiff("pacman", rownames(installed.packages())))
 library(pacman)
-p_load(shiny, shinydashboard, tidyverse, plotly)
+p_load(shiny, shinydashboard, tidyverse, plotly, glue)
 
 source_files <- c("../data/data.rds", "../data/boards.rds")
 

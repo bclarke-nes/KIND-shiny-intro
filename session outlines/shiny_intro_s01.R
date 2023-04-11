@@ -1,8 +1,8 @@
-## ms 99 ----
+## ms 1 ----
 
 install.packages(setdiff("pacman", rownames(installed.packages())))
 library(pacman)
-p_load(shiny, shinydashboard, tidyverse, plotly)
+p_load(shiny, shinydashboard, tidyverse, plotly, glue)
 
 source_files <- c("../data/data.rds", "../data/boards.rds")
 
@@ -57,7 +57,7 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 
-# ms 1 ----
+# ms 2 ----
 library(shiny)
 
 ui <- fluidPage()
@@ -68,7 +68,7 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 
-# ms 2 ----
+# ms 3 ----
 library(shiny)
 
 ui <- fluidPage("Hello world", textOutput("message"))
@@ -79,53 +79,55 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 
-# ms 3 ----
+# ms 4 ----
 library(pacman)
 p_load(shiny, tidyverse, NHSRdatasets)
 
-ui <- fluidPage("The mean number of attendances is: ", textOutput("mean_att"))
+ui <- fluidPage("The mean number of attendances per period is: ", textOutput("mean_att"))
 
 server <- function(input, output, session) {
   output$mean_att <- renderText(ae_attendances %>%
+                                  filter(org_code == "RF4") %>%
                                   pull(attendances) %>%
                                   mean())
-}
-
-shinyApp(ui, server)
-
-# ms 4 ----
-library(pacman)
-p_load(shiny, tidyverse)
-
-ui <- fluidPage(
-  "The mean number of attendances is: ",
-  textOutput("mean_att"),
-  plotOutput("att_period")
-)
-
-server <- function(input, output, session) {
-  output$mean_att <- renderText(ae_attendances %>%
-                                  pull(attendances) %>%
-                                  mean())
-  
-  output$att_period <- renderPlot(
-    ae_attendances %>%
-      group_by(period) %>%
-      summarise(attendances = sum(attendances)) %>%
-      ggplot(aes(x = period, y = attendances)) +
-      geom_line() +
-      geom_smooth()
-  )
 }
 
 shinyApp(ui, server)
 
 # ms 5 ----
 library(pacman)
-p_load(shiny, tidyverse, lubridate)
+p_load(shiny, tidyverse, NHSRdatasets)
 
 ui <- fluidPage(
-  "The mean number of attendances is: ",
+  "The mean number of attendances per period is: ",
+  textOutput("mean_att"),
+  plotOutput("att_period")
+)
+
+server <- function(input, output, session) {
+  output$mean_att <- renderText(ae_attendances %>%
+                                  filter(org_code == "RF4") %>%
+                                  pull(attendances) %>%
+                                  mean())
+  
+  output$att_period <- renderPlot(
+    ae_attendances %>%
+      filter(org_code == "RF4") %>%
+      group_by(period) %>%
+      summarise(attendances = sum(attendances)) %>%
+      ggplot(aes(x = period, y = attendances)) +
+      geom_line() 
+  )
+}
+
+shinyApp(ui, server)
+
+# ms 6 ----
+library(pacman)
+p_load(shiny, tidyverse, NHSRdatasets, lubridate)
+
+ui <- fluidPage(
+  "The mean number of attendances per period is: ",
   textOutput("mean_att"),
   plotOutput("att_period"),
   dataTableOutput("att_months")
@@ -133,19 +135,57 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   output$mean_att <- renderText(ae_attendances %>%
+                                  filter(org_code == "RF4") %>%
                                   pull(attendances) %>%
                                   mean())
   
   output$att_period <- renderPlot(
     ae_attendances %>%
+      filter(org_code == "RF4") %>%
       group_by(period) %>%
       summarise(attendances = sum(attendances)) %>%
       ggplot(aes(x = period, y = attendances)) +
-      geom_line() +
-      geom_smooth()
+      geom_line()
   )
   
   output$att_months <- renderDataTable(ae_attendances %>%
+                                         filter(org_code == "RF4") %>%
+                                         group_by(year = year(period)) %>%
+                                         summarise(attendances = sum(attendances)))
+}
+
+shinyApp(ui, server)
+
+# ms 7 ----
+library(pacman)
+p_load(shiny, tidyverse, NHSRdatasets, lubridate)
+orgs <- c("RF4", "R1H", "RQM") 
+
+ui <- fluidPage(
+  radioButtons("org_code", "Pick an org", choices=orgs, selected=orgs[1]),
+  "The mean number of attendances per period is: ",
+  textOutput("mean_att"),
+  plotOutput("att_period"),
+  dataTableOutput("att_months")
+)
+
+server <- function(input, output, session) {
+  output$mean_att <- renderText(ae_attendances %>%
+                                  filter(org_code == input$org_code) %>%
+                                  pull(attendances) %>%
+                                  mean())
+  
+  output$att_period <- renderPlot(
+    ae_attendances %>%
+      filter(org_code == input$org_code) %>%
+      group_by(period) %>%
+      summarise(attendances = sum(attendances)) %>%
+      ggplot(aes(x = period, y = attendances)) +
+      geom_line()
+  )
+  
+  output$att_months <- renderDataTable(ae_attendances %>%
+                                         filter(org_code == input$org_code) %>%
                                          group_by(year = year(period)) %>%
                                          summarise(attendances = sum(attendances)))
 }

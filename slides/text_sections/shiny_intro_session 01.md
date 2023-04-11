@@ -91,14 +91,39 @@ One file or several?
 (MILESTONE 04)
 
 + `renderText` to pass the output of the standard R code lines 10-12 to `output$mean_att`
-+ `textOutput("mean_att")` to insert that output in the UI. `container=span` keeps text inline
++ `textOutput("mean_att")` to insert that output in the UI. 
++ `container=span` keeps text inline
+
+## Add a graph
+
+Let's now add a second pair of functions:
+
++ add `plotOutput()` to the UI (separated from the `textOutput()` by a comma)
+  + add `"att_period"` inside `plotOutput()`
++ add `renderPlot()` to the server, assigned to `output$att_period`
+
+## Code snippet inside the `renderPlot()`
+
+```{r}
+ae_attendances %>%
+      group_by(period) %>%
+      summarise(attendances = sum(attendances)) %>%
+      ggplot(aes(x = period, y = attendances)) +
+      geom_line() +
+      geom_smooth()
+```
 
 (MILESTONE 05)
 
-+ `renderPlot` to pass the graph to `plotOutput`
++ That gives us a graph. Can you now try adding a data table, using `dataTableOutput()` and `renderDataTable()`?
 
 (MILESTONE 06)
 
-something else here
+This is all very static. Let's try to add some interactivity...
 
+(MILESTONE 07)
+
++ vector of orgs
++ added `radioButtons()` to the `ui()`
++ replaced org codes in the `server()` with `input$org_code`
 

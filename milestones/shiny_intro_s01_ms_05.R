@@ -1,5 +1,5 @@
 library(pacman)
-p_load(shiny, tidyverse)
+p_load(shiny, tidyverse, NHSRdatasets)
 
 ui <- fluidPage(
   "The mean number of attendances is: ",
@@ -9,16 +9,17 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   output$mean_att <- renderText(ae_attendances %>%
+                                  filter(org_code == "RF4") %>%
                                   pull(attendances) %>%
                                   mean())
   
   output$att_period <- renderPlot(
     ae_attendances %>%
+      filter(org_code == "RF4") %>%
       group_by(period) %>%
       summarise(attendances = sum(attendances)) %>%
       ggplot(aes(x = period, y = attendances)) +
-      geom_line() +
-      geom_smooth()
+      geom_line() 
   )
 }
 
