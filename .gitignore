@@ -2,8 +2,14 @@
 *.pdf
 *.docx
 /archive
-/neuro example/data/
+/testing
+/neuro*
+/neuro example/
 knit_list.r
+/data/data.rds
+/data/boards.rds
+/data/standardised_data.rds
+/data/standardised_data_national.rds
 
 # History files
 .Rhistory
