@@ -1,3 +1,4 @@
+
 stand_compare_boards <- function(boards, age, scot=FALSE) {
   
   comparison <- standardised_data_national %>%
@@ -61,3 +62,4 @@ stand_compare_boards <- function(boards, age, scot=FALSE) {
     
   }
 }
+

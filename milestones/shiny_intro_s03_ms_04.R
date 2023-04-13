@@ -21,3 +21,4 @@ if(all(file.exists(source_files))){
   standardised_data <- read_rds("data/standardised_data.rds")
   standardised_data_national <- read_rds("data/standardised_data_national.rds")
 }
+

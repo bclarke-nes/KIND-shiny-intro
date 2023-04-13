@@ -4,3 +4,4 @@ discharge_graph <- function(board) {
     ggplot() +
     geom_line(aes(x=MonthOfDelay, y=Total, color=AgeGroup))
 }
+

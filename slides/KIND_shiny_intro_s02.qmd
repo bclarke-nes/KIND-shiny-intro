@@ -1,10 +1,11 @@
 ---
-title: "KIND Shiny intro - session 02"
+title: "KIND Introductory Shiny"
+subtitle: "session 2"
 author: "Brendan Clarke"
 format: 
     revealjs:
         logo: "../images/KLN_banner_v04_700.png"
-        css: logo.css
+        css: "../images/logo.css"
 scrollable: true
 smaller: true
 execute: 

@@ -86,7 +86,7 @@ data %>%
   ggplot() +
   geom_line(aes(x=MonthOfDelay, y=Total, color=AgeGroup))
 
-# ms 5 ----
+# ms 6 ----
 discharge_graph <- function(board) {
 
 }

@@ -108,10 +108,10 @@ With the eventual aim of developing the full dashboard, we'll now add three more
 
 (MILESTONE 10)
 
-(MILESTONE 10)
+(MILESTONE 11)
 
-(MILESTONE 10)
+(MILESTONE 12)
 
-(MILESTONE 10)
+(MILESTONE 13)
 
-## thing
+## Next time!

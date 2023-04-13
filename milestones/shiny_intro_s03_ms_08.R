@@ -15,3 +15,5 @@ discharge_graph <- function(board) {
           legend.text = element_text(size=16))
   
 }
+
+

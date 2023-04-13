@@ -1,3 +1,4 @@
+
 compare_boards <- function(boards, age, date_range=c(dmy("01/07/2016"), dmy("01/01/2023"))) {
   
   start <- date_range[1]
@@ -18,3 +19,4 @@ compare_boards <- function(boards, age, date_range=c(dmy("01/07/2016"), dmy("01/
     xlim(start, end)
   
 }
+
