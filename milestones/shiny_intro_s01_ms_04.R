@@ -1,7 +1,7 @@
 library(pacman)
 p_load(shiny, tidyverse, NHSRdatasets)
 
-ui <- fluidPage("The mean number of attendances is: ", textOutput("mean_att"))
+ui <- fluidPage("The mean number of attendances per period is: ", textOutput("mean_att"))
 
 server <- function(input, output, session) {
   output$mean_att <- renderText(ae_attendances %>%

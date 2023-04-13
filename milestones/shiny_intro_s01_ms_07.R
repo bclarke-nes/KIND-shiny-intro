@@ -4,7 +4,7 @@ orgs <- c("RF4", "R1H", "RQM")
 
 ui <- fluidPage(
   radioButtons("org_code", "Pick an org", choices=orgs, selected=orgs[1]),
-  "The mean number of attendances is: ",
+  "The mean number of attendances per period is: ",
   textOutput("mean_att"),
   plotOutput("att_period"),
   dataTableOutput("att_months")

@@ -6,6 +6,8 @@ filez = list.files("..//milestones", full.names=T, pattern="*.R")
 
 ui <- fluidPage(
   h1("KIND Shiny intro - diffr"),
+  tags$img(src='./images/diffr.png'),
+  
   checkboxInput("wordWrap", "Word Wrap",
                 value = TRUE),
   selectInput("file1", "File 1", choices=basename(filez)),

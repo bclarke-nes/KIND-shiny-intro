@@ -2,7 +2,7 @@ library(pacman)
 p_load(shiny, tidyverse, NHSRdatasets)
 
 ui <- fluidPage(
-  "The mean number of attendances is: ",
+  "The mean number of attendances per period is: ",
   textOutput("mean_att"),
   plotOutput("att_period")
 )

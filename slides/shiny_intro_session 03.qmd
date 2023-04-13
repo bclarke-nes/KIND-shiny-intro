@@ -3,7 +3,7 @@ title: "KIND Shiny intro - session 03"
 author: "Brendan Clarke"
 format: 
     revealjs:
-        logo: "KLN_banner_v04_700.png"
+        logo: "../images/KLN_banner_v04_700.png"
         css: logo.css
 scrollable: true
 smaller: true
@@ -11,7 +11,6 @@ execute:
     echo: true
     eval: false
 ---
-
 ## Session learning outcomes
 
 + outsourcing more complicated R code to a script

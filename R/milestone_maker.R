@@ -79,20 +79,8 @@ quarto_summary <- tibble(
 )
 
 for (i in unique(quarto_summary$session)) {
-  header <- vector("character", 14)
-  header[1] <- "---"
-  header[2] <- paste0('title: "KIND Shiny intro - ', i, '"')
-  header[3] <- 'author: "Brendan Clarke"'
-  header[4] <- "format: "
-  header[5] <- "    revealjs:"
-  header[6] <- '        logo: "KLN_banner_v04_700.png"'
-  header[7] <- '        css: logo.css'
-  header[8] <- 'scrollable: true'
-  header[9] <- 'smaller: true'
-  header[10] <- 'execute: '
-  header[11] <- '    echo: true'
-  header[12] <- '    eval: false'
-  header[13] <- '---'
+
+  header <- c("---", paste0('title: "KIND Shiny intro - ', i, '"'), 'author: "Brendan Clarke"', "format: ", "    revealjs:", '        logo: "../images/KLN_banner_v04_700.png"', '        css: logo.css', 'scrollable: true', 'smaller: true', 'execute: ', '    echo: true', '    eval: false', '---')
   
   write_lines(header, paste0(output_path, "//shiny_intro_", i, ".qmd"))
   

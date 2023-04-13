@@ -1,45 +1,84 @@
 ## About this course
-+ An accessible introduction to Shiny
-+ Interactive
-  + Cameras on as much as possible, please
+This is an accessible introduction to Shiny
+
++ Social
+
+::: {.callout-note}
+Cameras on as much as possible, please
+:::
+
 + Collaborative, particularly for troubleshooting
 + Assumes basic familiarity with R and Posit/Rstudio
 
-## Set-up
-Please make a new empty project in Posit
+## Session 1 outline
+1. getting started with Posit
+2. 5 minute introduction to Shiny
+3. dashboard demo 
+4. R vs Shiny
+5. `app.R` / "hello world"
+6. `input$x` / `output$x` syntax
+7. graphs and data tables
+8. interactivity
 
-### Helpful resources
+## Session milestones
+1. dashboard demo
+2. app.R
+3. hello world
+4. `input$x` / `output$x` syntax
+5. add a graph
+6. add a data table
+7. first interactivity
+
+## Helpful resources
++ [Posit Cheatsheet](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf)
 + [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
 + [Mastering Shiny](https://mastering-shiny.org/index.html)
 
-## This session
-+ basic functions
-+ R vs Shiny
-+ reactive programming
-+ milestones
-  + app.R
-  + hello world
-  + displaying R output
-  + adding interactivity
-  + first reactivity
-  
-## What's Shiny?
+## Set-up
+1. Log-in to Posit Cloud
+2. Create a new project from this URL: [https://github.com/bclarke-nes/KIND-shiny-intro](https://github.com/bclarke-nes/KIND-shiny-intro)
 
-* R package for interactive, web-based, app development
+## What's Shiny
 
-* Health and social care examples
++ R package for interactive, web-based, app development
++ Example applications:
+  + real-time dashboards
+  + interactive tools
+  + self-service data portal
+  + data-driven web apps (e.g. allowing users to upload and process data)
+
++ Health and social care examples
   + [PHS ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/)
   + [NTI dashboard](https://scotland.shinyapps.io/nhs-prescribing-nti/)
   
-* Quick demo: `shiny_intro_s01_demo.R`
+## Deploying Shiny
++ Run dashboards locally 
++ Share code for local use
++ Share code more widely (e.g. [revtools](https://revtools.net/) package)
+* Publish apps:
+  * via open SaaS platforms, like [shinyapps.io](https://www.shinyapps.io/)
+  * Dedicated platforms via Shiny server, SPACe Analytical Workbench...
+
+::: {.callout-tip}
+
+Great primer on deploying Shiny: [Rstudio Shiny tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson7/)
+
+:::
+
+  
+## Dashboard demo
+
+![](../images/dd_preview.png){fig-align="center"}
+
+(we'll be at this point in two weeks)
 
 (MILESTONE 01)
 
-## Shiny vs R (1)
+## R vs Shiny
 
 ::: {.callout-warning}
 
-The syntax used in Shiny is very similar to R. But the programming approach is totally different.
+While Shiny's syntax looks very similar to R, the programming approach is totally different.
 
 :::
 
@@ -51,42 +90,46 @@ Shiny is **declarative** - "here are our goals and constraints..."
 
 [Mastering Shiny ch. 3](https://mastering-shiny.org/basic-reactivity.html#imperative-vs-declarative-programming)
 
-## What can you do with Shiny?
-* Share code for local use
-* Publish apps:
-  * Open SaaS platform: https://www.shinyapps.io/
-  * Dedicated platforms via Shiny server, SPACe Analytical Workbench...
+## First steps
 
-::: {.callout-tip}
-
-### An excellent primer on deploying Shiny
-
-[Rstudio Shiny tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson7/)
-
-:::
-
-(MILESTONE 02)
+1. Create a new (empty) file called `app.R`
+2. click in the source pane, and start typing `Shiny`...
 
 ![](..//images//image-2077227059.png){fig-align="center"}
 
+(MILESTONE 02)
+
 (MILESTONE 03)
 
-Note the `output$message` - this is how we pass the body of the message to the `textOutput` part of the UI
++ Note the `output$message` - this is how we pass the body of the message to the `textOutput` part of the UI
+
+::: {.callout-tip}
+
+`ctrl`+`shift`+`enter` to run your app
+
+:::
+
+
+## `diffr`
+
+![](../images/diffr.png){fig-align="center"}
 
 ## Anatomy of a Shiny app
 
-1. UI
-2. Server
-3. Call to `shinyApp`
+We need at least three elements for a Shiny app:
 
-One file or several?
+1. UI - containing the code for the front-end user interface
+2. Server - containing the code for the back-end (e.g. plotting graphs etc)
+3. Call to `shinyApp` - that launches the app
 
-## Shiny vs R (2)
-+ reactive
-+ interactive
-+ UI and server parts
-  + `input$x` and `output$x` syntax
-  + pairs of functions to pass things (graphs, text) between server and UI 
+These can be split into separate files, or contained in one `app.R` script. We'll start with the single file for now, but will start to split things up as our scripts grow.
+
+## Function pairs
+
+Reactivity uses pairs of functions to pass things (user input, graphs, text) between server and UI
+
++ `input$x` and `output$x` syntax
+
 
 (MILESTONE 04)
 
@@ -102,7 +145,7 @@ Let's now add a second pair of functions:
   + add `"att_period"` inside `plotOutput()`
 + add `renderPlot()` to the server, assigned to `output$att_period`
 
-## Code snippet inside the `renderPlot()`
+#### Code snippet inside the `renderPlot()`
 
 ```{r}
 ae_attendances %>%
@@ -115,15 +158,81 @@ ae_attendances %>%
 
 (MILESTONE 05)
 
-+ That gives us a graph. Can you now try adding a data table, using `dataTableOutput()` and `renderDataTable()`?
+## Add a data table
+
+Let's add a data table, using `dataTableOutput()` and `renderDataTable()`
+
+#### Code snippet inside `renderDataTable()`
+
+```{r}
+ae_attendances %>%
+     filter(org_code == "RF4") %>%
+     group_by(year = year(period)) %>%
+     summarise(attendances = sum(attendances))
+```
 
 (MILESTONE 06)
 
 This is all very static. Let's try to add some interactivity...
 
+## User input
+
+There are many ways to collect user input in Shiny. We'll start with something simple to allow our user to choose an org. We'll need to add three things:
+
++ a vector of orgs for the user to choose from
++ `radioButtons()` function in the `ui()`
++ an update to the `server()` to capture the chosen org
+
+#### orgs
+Add the vector in the head of your `app.R`: 
+
+```{r}
+orgs <- c("RF4", "R1H", "RQM")
+```
+
+## `radioButtons()` UI
+
+Here's (part) of the man page for `radioButtons()`
+
+```{r}
+radioButtons(
+  inputId,
+  label,
+  choices = NULL,
+  selected = NULL)
+```
+
+We'll need to add:
+
++ `inputId` = what our app will call the input. Use `org_code`
++ `label` = what our user will see as the input name. Use whatever you like!
++ `choices` = the choices available. Use `orgs`
++ `selected` = the default selection. Use `orgs[1]` to default select the first item.
+
+## `radioButtons()` server
+
+We need to make the same change three times in `server()`. Each of our three `renderSomething()` functions currently have a line filtering the data for RF4:
+
+```{r}
+filter(org_code == "RF4") %>%
+```
+
+We need to change that to filter on `input$org_code`
+
+```{r}
+filter(org_code == input$org_code)
+```
+
+::: {.callout-note}
+Don't forget to run your app
+:::
+
 (MILESTONE 07)
 
-+ vector of orgs
-+ added `radioButtons()` to the `ui()`
-+ replaced org codes in the `server()` with `input$org_code`
+## Next time!
+
++ adding extra user input elements
++ doing more interesting things with our R code
++ building out our dashboard project
+
 
