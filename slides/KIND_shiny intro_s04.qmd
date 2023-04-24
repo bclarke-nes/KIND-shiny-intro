@@ -1,0 +1,30 @@
+---
+title: "KIND Introductory Shiny"
+subtitle: "session 4"
+author: "Brendan Clarke"
+format: 
+    revealjs:
+        logo: "..//src//images//KLN_banner_v05_125.png"
+        css: "..//src//images//logo.css"
+scrollable: true
+smaller: true
+execute: 
+    echo: true
+    eval: false
+---
+## Session learning outcomes
+
++ polishing our code
++ thinking about how the elements fit together to tell an effective story about our data
+
+## Goal
+  
+## Milestone 01
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_01.R
+```
+
+  
+ <!-- all milestones included -->
