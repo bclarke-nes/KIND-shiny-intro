@@ -1,29 +1,25 @@
 library(pacman)
-p_load(shiny, shinydashboard, plotly, tidyverse, lubridate,  glue, ggrepel)
+p_load(shiny, shinydashboard, plotly, tidyverse, lubridate,  glue, ggrepel, here)
 
 # data loading and processing ----
 # this script will either read processed data from rds files, or create them using s03_data.R if they do not exist
 
 # it then contains functions to produce the graphs used in the  dashboards
 # 
-source_files <- c("data.rds", "boards.rds", "standardised_data.rds", "standardised_data_national.rds")
+source_files <- c(here("data", "data.rds"),
+                  here("data", "boards.rds"),
+                  here("data", "standardised_data.rds"),
+                  here("data", "standardised_data_national.rds"))
 
-if(all(file.exists(source_files))){
-
-  data <- read_rds("data.rds")
-  boards <- read_rds("boards.rds")
-  standardised_data <- read_rds("standardised_data.rds")
-  standardised_data_national <- read_rds("standardised_data_national.rds")
-
-} else {
-  source("s03_data.R")
-  data <- read_rds("data.rds")
-  boards <- read_rds("boards.rds")
-  standardised_data <- read_rds("standardised_data.rds")
-  standardised_data_national <- read_rds("standardised_data_national.rds")
+if(!all(file.exists(source_files))){
+  source(here("R", "s03_data.R"), local = TRUE)
 }
+data <- read_rds(source_files[1])
+boards <- read_rds(source_files[2])
+standardised_data <- read_rds(source_files[3])
+standardised_data_national <- read_rds(source_files[4])
 
-Scot_HB <- read_rds("Scot_HB.RDS")
+Scot_HB <- read_rds(here("final_app", "Scot_HB.RDS"))
 
 # functions ----
 discharge_graph <- function(board) {
