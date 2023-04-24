@@ -1,9 +1,5 @@
-![](slides/KLN_banner_v04_700.png)
-================
-Brendan Clarke
-2023-04-11
-
 # Introductory Shiny
+2023-04-11
 
 ## Introduction
 
