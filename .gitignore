@@ -7,10 +7,6 @@ slides/**/*files
 /neuro*
 /neuro example/
 main_file.R
-/data/data.rds
-/data/boards.rds
-/data/standardised_data.rds
-/data/standardised_data_national.rds
 
 # History files
 .Rhistory
