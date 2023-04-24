@@ -1,6 +1,6 @@
 install.packages(setdiff("pacman", rownames(installed.packages())))
 library(pacman)
-p_load(shiny, shinydashboard, tidyverse, plotly, glue, NHSRdatasets, diffr, ggrepel, here) # loading all install.packages(setdiff("pacman", rownames(installed.packages())))
+p_load(shiny, shinydashboard, tidyverse, plotly, glue, NHSRdatasets, diffr, ggrepel, here, sf) # loading all packages required for the course
 i_am("milestones/shiny intro_s01_ms_01.R")
 
 source_files <- c(here("data", "data.rds"),
