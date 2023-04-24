@@ -1,8 +1,8 @@
 # diffr
 library(pacman)
-p_load(diffr, tidyverse, shiny)
+p_load(diffr, tidyverse, shiny, here)
 
-milestone_files = list.files("..//milestones", full.names = T, pattern = "*.R")
+milestone_files = list.files(here("milestones"), full.names = T, pattern = "*.R")
 
 ui <- fluidPage(
   fluidRow(column(
@@ -26,13 +26,13 @@ ui <- fluidPage(
 )
 server <- function(input, output, session) {
   output$header <- renderImage({
-    list(src = "../src/images/KLN_banner_v05_125.png", contentType = 'image/png', height = '125px')},       deleteFile = FALSE)
+    list(src = here("src", "images", "KLN_banner_v05_125.png"), contentType = 'image/png', height = '125px')},       deleteFile = FALSE)
   
   
   output$exdiff <- renderDiffr({
     diffr(
-      paste0("..//milestones//", input$file1),
-      paste0("..//milestones//", input$file2),
+      here("milestones", input$file1),
+      here("milestones", input$file2),
       wordWrap = input$wordWrap,
       before = input$file1,
       after = input$file2,

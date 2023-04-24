@@ -65,7 +65,7 @@ standardised_data_national <- standardised_data %>%
   filter(HBName == "National")
 
 # write .rds files
-write_rds(boards, "../data/boards.rds")
-write_rds(data, "../data/data.rds")
-write_rds(standardised_data, "../data/standardised_data.rds")
-write_rds(standardised_data_national, "../data/standardised_data_national.rds")
+write_rds(data, source_files[1])
+write_rds(boards, source_files[2])
+write_rds(standardised_data, source_files[3])
+write_rds(standardised_data_national, source_files[4])

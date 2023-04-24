@@ -1,14 +1,14 @@
 install.packages(setdiff("pacman", rownames(installed.packages())))
 library(pacman)
-p_load(shiny, shinydashboard, tidyverse, plotly, glue, NHSRdatasets, diffr) # loading all packages needed for training course
+p_load(shiny, shinydashboard, tidyverse, plotly, glue, NHSRdatasets, diffr, ggrepel, here) # loading all install.packages(setdiff("pacman", rownames(installed.packages())))
+i_am("milestones/shiny intro_s01_ms_01.R")
 
-source_files <- c("../data/data.rds", "../data/boards.rds")
+source_files <- c(here("data", "data.rds"),
+                  here("data", "boards.rds"),
+                  here("data", "standardised_data.rds"),
+                  here("data", "standardised_data_national.rds"))
 
-if(!all(file.exists(source_files))){
-  source("..//R//s03_data.R", local = TRUE)
-}
-data <- read_rds(source_files[1])
-boards <- read_rds(source_files[2])
+source(here("R", "s03.R"))
 
 ui <- dashboardPage(
   dashboardHeader(title = "Delayed discharge dashboard", titleWidth = 350),
