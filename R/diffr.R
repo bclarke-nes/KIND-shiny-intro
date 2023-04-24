@@ -2,19 +2,33 @@
 library(pacman)
 p_load(diffr, tidyverse, shiny)
 
-filez = list.files("..//milestones", full.names=T, pattern="*.R")
+milestone_files = list.files("..//milestones", full.names = T, pattern = "*.R")
 
 ui <- fluidPage(
-  h1("KIND Shiny intro - diffr"),
-  tags$img(src='./images/diffr.png'),
+  fluidRow(column(
+    12,
+    HTML("<div style='height: 125px;'>"),
+    imageOutput("header"),
+    HTML("</div>")
+  )),
   
-  checkboxInput("wordWrap", "Word Wrap",
-                value = TRUE),
-  selectInput("file1", "File 1", choices=basename(filez)),
-  selectInput("file2", "File 2", choices=basename(filez)),
-  diffrOutput("exdiff",  width = "100%")
+  h1("KIND Introductory Shiny - milestone diffr"),
+  
+  checkboxInput("wordWrap", "Word Wrap", value = TRUE),
+  
+  fluidRow(column(
+    6, selectInput("file1", "File 1", choices = basename(milestone_files))
+  ),
+  column(
+    6, selectInput("file2", "File 2", choices = basename(milestone_files))
+  )),
+  fluidRow(column(12, diffrOutput("exdiff", width = '100%')))
 )
 server <- function(input, output, session) {
+  output$header <- renderImage({
+    list(src = "../src/images/KLN_banner_v05_125.png", contentType = 'image/png', height = '125px')},       deleteFile = FALSE)
+  
+  
   output$exdiff <- renderDiffr({
     diffr(
       paste0("..//milestones//", input$file1),
@@ -28,4 +42,3 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
-
