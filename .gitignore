@@ -6,7 +6,7 @@ slides/**/*files
 /testing
 /neuro*
 /neuro example/
-knit_list.r
+main_file.R
 /data/data.rds
 /data/boards.rds
 /data/standardised_data.rds
