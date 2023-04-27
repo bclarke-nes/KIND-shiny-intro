@@ -1,0 +1,115 @@
+---
+title: "![](images/KLN_banner_v05_125.png) Icons for Shiny"
+format: 
+  html:
+    self-contained: true
+---
+
++ use the `icon()` function to draw icons. Supply a [fontawesome](https://fontawesome.com/) icon name
++ e.g. `icon("info-circle")` becomes 
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+shiny::icon("info-circle")
+library(fontawesome)
+library(tidyverse)
+```
+
++ Note that not all fa icons are available for use in Shiny. This cheat-sheet is meant to soothe the pain of trying to select suitable (free) icons for health, social care, and housing projects.
+
+::: {.panel-tabset}
+
+## Selection for health, social care, housing
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| results: asis
+ic <- c("baby-carriage", "bacterium", "ban-smoking", "bed", "bed-pulse", "building", "building-circle-arrow-right", "building-circle-check", "building-circle-exclamation", "building-circle-xmark", "building-columns", "building-flag", "building-lock", "building-ngo", "building-shield", "bus", "bus-simple", "calculator", "calendar", "calendar-check", "calendar-day", "calendar-days", "calendar-minus", "calendar-plus", "calendar-week", "calendar-xmark", "chart-bar", "chart-column", "chart-gantt", "chart-line", "chart-pie", "chart-simple", "child-dress", "child-reaching", "children", "eye", "eye-dropper", "fire", "flag", "head-side-cough", "head-side-cough-slash", "head-side-mask", "head-side-virus", "heart", "heart-circle-bolt", "heart-circle-check", "heart-circle-exclamation", "heart-circle-minus", "heart-circle-plus", "heart-circle-xmark", "heart-crack", "heart-pulse", "helicopter", "helicopter-symbol", "hospital", "hospital-user", "house-medical-circle-exclamation", "house-user", "id-card", "kit-medical", "lightbulb", "location-arrow", "lungs", "lungs-virus", "magnifying-glass-chart", "magnifying-glass-minus", "magnifying-glass-plus", "mars", "mars-and-venus", "mars-double", "mask-face", "mask-ventilator", "notes-medical", "people-roof", "person", "person-booth", "person-breastfeeding", "person-cane", "person-walking-dashed-line-arrow-right", "person-walking-luggage", "person-walking-with-cane", "pills", "poo", "poop", "radiation", "reply", "shield-heart", "shield-virus", "shower", "skull", "skull-crossbones", "sliders", "smoking", "square-virus", "stethoscope", "suitcase-medical", "syringe", "tablets", "taxi", "teeth", "teeth-open", "temperature-arrow-down", "temperature-arrow-up", "temperature-empty", "temperature-full", "temperature-half", "temperature-high", "temperature-low", "temperature-quarter", "temperature-three-quarters", "thermometer", "toilet", "toilet-paper", "toilet-paper-slash", "toilet-portable", "toilets-portable", "tooth", "transgender", "triangle-exclamation", "truck-droplet", "universal-access", "user-check", "user-clock", "user-doctor", "user-gear", "user-graduate", "user-group", "user-injured", "user-large", "user-large-slash", "user-lock", "user-minus", "user-ninja", "user-nurse", "user-pen", "user-plus", "user-secret", "user-shield", "user-slash", "user-tag", "user-tie", "user-xmark", "users", "users-between-lines", "users-gear", "users-line", "users-rays", "users-rectangle", "users-slash", "users-viewfinder", "van-shuttle", "venus", "venus-double", "venus-mars", "vial", "vial-circle-check", "vial-virus", "vials", "video", "video-slash", "virus", "virus-covid", "virus-covid-slash", "virus-slash", "viruses")
+
+cat("| | | | | |")
+cat("  \n")
+cat("|---------|---------|---------|---------|---------|")
+for(i in seq(1,length(ic),5)){
+  cat(
+    paste0("  \n | ", 
+           " {{< fa ", ic[i], " >}}  \t", ic[i], " | ", 
+           " {{< fa ", ic[i+1], " >}}  \t", ic[i+1], " | ",
+           " {{< fa ", ic[i+2], " >}}  \t", ic[i+2], " | ",
+           " {{< fa ", ic[i+3], " >}}  \t", ic[i+3], " | ",
+           " {{< fa ", ic[i+4], " >}}  \t", ic[i+4], " | "
+           )
+    )
+}
+```
+
+
+## Fontawesome solid
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| results: asis
+
+
+
+ic <- tibble(name = fa_metadata()$icon_names_full) %>%
+  separate(name, into=c("prefix", "name"), sep=" ") %>%
+  filter(prefix == "fas") %>%
+  pull(name) %>%
+  str_remove("^fa-")
+
+cat("| | | | | |")
+cat("  \n")
+cat("|---------|---------|---------|---------|---------|")
+for(i in seq(1,length(ic),5)){
+  cat(
+    paste0("  \n | ", 
+           " {{< fa ", ic[i], " >}}  \t", ic[i], " | ", 
+           " {{< fa ", ic[i+1], " >}}  \t", ic[i+1], " | ",
+           " {{< fa ", ic[i+2], " >}}  \t", ic[i+2], " | ",
+           " {{< fa ", ic[i+3], " >}}  \t", ic[i+3], " | ",
+           " {{< fa ", ic[i+4], " >}}  \t", ic[i+4], " | "
+           )
+    )
+}
+```
+
+## Fontawesome brands
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| results: asis
+
+ic <- tibble(name = fa_metadata()$icon_names_full) %>%
+  separate(name, into=c("prefix", "name"), sep=" ") %>%
+  filter(prefix == "fab") %>%
+  # filter(prefix == "far")
+  pull(name) %>%
+  str_remove("^fa-")
+
+cat("| | | | | |")
+cat("  \n")
+cat("|---------|---------|---------|---------|---------|")
+for(i in seq(1,length(ic),5)){
+  cat(
+    paste0("  \n | ", 
+           " {{< fa brands ", ic[i], " >}}  \t", ic[i], " | ", 
+           " {{< fa brands ", ic[i+1], " >}}  \t", ic[i+1], " | ",
+           " {{< fa brands ", ic[i+2], " >}}  \t", ic[i+2], " | ",
+           " {{< fa brands ", ic[i+3], " >}}  \t", ic[i+3], " | ",
+           " {{< fa brands ", ic[i+4], " >}}  \t", ic[i+4], " | "
+           )
+    )
+}
+```
+
+:::

@@ -11,7 +11,6 @@ tidy_age_groups <- function(df) {
       AgeGroup == "18-74" ~ "18 - 74",
       AgeGroup == "18plus" ~ "18 plus",
       AgeGroup == "75plus" ~ "75 plus"))
-    
 }
 
 message("Loading data from source, apologies for the delay")

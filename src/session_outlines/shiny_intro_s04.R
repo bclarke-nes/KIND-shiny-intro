@@ -1,8 +1,78 @@
 # ms 1 ----
 
 library(pacman)
+p_load(shiny, shinydashboard)
+
+ui <- fluidPage(
+  dashboardPage(
+    dashboardHeader(),
+    dashboardSidebar(),
+    dashboardBody(h2("Comparing delayed discharge rate between boards"),
+                  
+                  fluidRow(plotOutput("graph"),) ,
+                  fluidRow(
+                    box(
+                      title = "Controls",
+                      selectInput("board", "Pick a board:", unique(boards$HBName))
+                    )
+                  )
+    )
+  )
+  
+)
+
+# ms 2 ----
+
+ui <- dashboardPage(
+  dashboardHeader(title = "Delayed discharge dashboard", titleWidth = 350),
+  dashboardSidebar(
+    width = 350,
+    collapsed = F,
+    sidebarMenu(
+      menuItem(
+        "Introduction",
+        tabName = "introduction",
+        icon = icon("info-circle")
+      ),
+      menuItem(
+        "Delayed discharges by board",
+        tabName = "by_board",
+        icon = icon("briefcase-medical")
+      ),
+      menuItem(
+        "Comparing delayed discharges between boards",
+        tabName = "between_boards",
+        icon = icon("handshake")
+      ),
+      menuItem(
+        "Comparing delayed discharge rate between boards",
+        tabName = "rates",
+        icon = icon("clinic-medical")
+      ),
+      menuItem(
+        "Mapping delayed discharge rates",
+        tabName = "map",
+        icon = icon("globe")
+      )
+    )
+  ),
+  dashboardBody(h2("Comparing delayed discharge rate between boards"),
+                
+                fluidRow(plotOutput("graph"),) ,
+                fluidRow(
+                  box(
+                    title = "Controls",
+                    selectInput("board", "Pick a board:", unique(boards$HBName))
+                  )
+                )
+  )  
+)
+
+# ms 2 ----
+
+library(pacman)
 p_load(shiny, shinydashboard, tidyverse, plotly)
-source("s04.R", local = TRUE)
+source(here("R", "s04.R"), local = TRUE)
 
 ui <- dashboardPage(
   dashboardHeader(title = "Delayed discharge dashboard", titleWidth = 350),
@@ -201,7 +271,7 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
 
-  isolate(source("s04.R", local=T))
+  isolate(source(here("R", "s04.R"), local=T))
   
   output$graph <- renderPlot(discharge_graph(input$data))
   
@@ -225,5 +295,6 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 
-# ms 2 ----
+# ms 3 ----
+
 #little bit of test something

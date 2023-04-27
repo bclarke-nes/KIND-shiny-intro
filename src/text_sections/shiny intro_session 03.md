@@ -34,7 +34,7 @@ With that UI framework in place, we can start thinking about building a dashboar
 
 Let's look at the DD data now to see what we're likely to need
 
-## Architecture
+## DD data architecture
 
 + HBT
 + AgeGroup
@@ -44,12 +44,12 @@ Let's look at the DD data now to see what we're likely to need
 
 ## Getting the data
 
-+ stand-alone data-processing script in `/data/s03_data.R` that downloads and tidies the data for us. You're very welcome to dissect that script - it's not very interesting, but the upshot is that it makes four .rds data files from the open data:
-
-+ data/data.rds - the main delayed discharge data
-+ data/boards.rds - a tibble of board names and codes
-+ data/standardised_data.rds - delayed discharges per capita for the territorial NHS boards
-+ data/standardised_data_national.rds - delayed discharges per capita, national
++ there's a data-processing script in `/R/s03_data.R` that downloads and tidies the data for us. This makes four .rds data files from the open data:
+  + data/data.rds - the main delayed discharge data
+  + data/boards.rds - a tibble of board names and codes
+  + data/standardised_data.rds - delayed discharges per capita for the territorial NHS boards
+  + data/standardised_data_national.rds - delayed discharges per capita, national
++ we'll call that script from `R/s03.R`, which will also hold our functions
 
 ## Producing outputs
 
@@ -57,6 +57,8 @@ Let's look at the DD data now to see what we're likely to need
 + we'll need a new R script: please create `R/s03.R` and add the following...
 
 (MILESTONE 04)
+
++ note use of `here()` / `i_am()` - extremely helpful for Shiny
 
 ## Building a graph function
 
@@ -67,7 +69,12 @@ Now we'll need to build some `ggplot` to:
 
 (MILESTONE 05)
 
-Now we can wrap that code in a function to allow us to supply a board name, and return the appropriate graph. The first step is to create an empty function called `discharge_graph` that takes a single argument...
++ try testing this code now in `s03.R`
++ once it's working, you should create a `discharge_graph` function from it:
+  + argument - board name
+  + return - appropriate graph. 
+  
+The first step is to create an empty function called  that takes a single argument...
 
 (MILESTONE 06)
 
@@ -83,21 +90,31 @@ Once we've got this in place (and tested) we can do a bit of beautifying:
 
 `glue()` is very helpful for making appropriate labels.
 
-
-(MILESTONE 08)
+## Changes in `ui()`
 
 We can now put the appropriate elements into the UI
 
++ a couple of `fluidRow()`s, containing
+  + a `box()` with a `selectInput()` for the boards
+  + a `plotOutput()` for our graph
+
+(MILESTONE 08)
+
+## Changes in `server()`
+
++ `isolate()`, which is a way of safely `source()`-ing scripts inside `server()`
+  + useful explanation from [the Shiny manual](https://shiny.rstudio.com/articles/isolation.html)
++ the single function call to `delayed_discharge()` with appropriate `input$x`
+
 (MILESTONE 09)
 
-Two things to add to `server()`:
 
-+ `isolate`, which is a way of safely `source()`-ing scripts inside `server()`
-+ the single function call to `delayed_discharge()` 
 
 ## Developing the script
 
-With the eventual aim of developing the full dashboard, we'll now add three more functions to s03.R:
+(we're pretty-well back to the starting demo dashboard from session 1 here, so congratulations!)
+
+With the eventual aim of developing the full dashboard, we'll now add three more functions to `s03.R`:
 
 + `compare_boards()` - to compare DD counts between boards
   + three arguments: boards, age, date_range
@@ -112,6 +129,9 @@ With the eventual aim of developing the full dashboard, we'll now add three more
 
 (MILESTONE 12)
 
-(MILESTONE 13)
-
 ## Next time!
+
++ `shinydashboard` menu and sections
++ adding those new functions as pages in our dashboard
++ tweaks, tidying up, and story-telling
++ thinking about project architecture

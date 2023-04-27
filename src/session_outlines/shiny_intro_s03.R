@@ -56,28 +56,25 @@ shinyApp(ui, server)
 
 # ms 4 ----
 library(pacman)
-p_load(tidyverse, lubridate, glue, ggrepel)
+p_load(tidyverse, lubridate, glue, ggrepel, here)
+i_am("R/s03.R")
 
 # data loading and processing ----
 # this script will either read processed data from rds files, or create them using s03_data.R if they do not exist
 # it then contains functions to produce the graphs used in the session 3 and session 4 dashboards
 
-source_files <- c("data/data.rds", "data/boards.rds", "data/standardised_data.rds", "data/standardised_data_national.rds")
+source_files <- c(here("data", "data.rds"),
+                  here("data", "boards.rds"),
+                  here("data", "standardised_data.rds"),
+                  here("data", "standardised_data_national.rds"))
 
-if(all(file.exists(source_files))){
-  
-  data <- read_rds("data/data.rds")
-  boards <- read_rds("data/boards.rds")
-  standardised_data <- read_rds("data/standardised_data.rds")
-  standardised_data_national <- read_rds("data/standardised_data_national.rds")
-  
-} else {
-  source("data/s03_data.R")
-  data <- read_rds("data/data.rds")
-  boards <- read_rds("data/boards.rds")
-  standardised_data <- read_rds("data/standardised_data.rds")
-  standardised_data_national <- read_rds("data/standardised_data_national.rds")
+if(!all(file.exists(source_files))){
+  source(here("R", "s03_data.R"), local = TRUE)
 }
+data <- read_rds(source_files[1])
+boards <- read_rds(source_files[2])
+standardised_data <- read_rds(source_files[3])
+standardised_data_national <- read_rds(source_files[4])
 
 # ms 5 ----
 
@@ -170,7 +167,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  isolate(source("R/s03.R", local = TRUE))
+  isolate(source(here("R", "s03.R"), local = TRUE))
   
   output$graph <- renderPlot(
     discharge_graph(input$board)
@@ -306,7 +303,7 @@ comp_map <- function(month_r, age = "18 plus", comp = "National") {
     left_join(comparator) %>%
     mutate(comparative_rate = rate / comp_rate)
   
-  Scot_HB <- read_rds("data/Scot_HB.RDS")
+  Scot_HB <- read_rds(here("data", "Scot_HB.RDS"))
   
   ggplotly(Scot_HB %>%
              left_join(df, by = c("id_json" = "HB")) %>%
