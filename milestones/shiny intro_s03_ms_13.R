@@ -35,7 +35,7 @@ comp_map <- function(month_r, age = "18 plus", comp = "National") {
     left_join(comparator) %>%
     mutate(comparative_rate = rate / comp_rate)
   
-  Scot_HB <- read_rds("data/Scot_HB.RDS")
+  Scot_HB <- read_rds(here("data", "Scot_HB.RDS"))
   
   ggplotly(Scot_HB %>%
              left_join(df, by = c("id_json" = "HB")) %>%

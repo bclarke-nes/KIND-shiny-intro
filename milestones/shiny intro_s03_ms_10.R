@@ -20,7 +20,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  isolate(source("R/s03.R", local = TRUE))
+  isolate(source(here("R", "s03.R"), local = TRUE))
   
   output$graph <- renderPlot(
     discharge_graph(input$board)
