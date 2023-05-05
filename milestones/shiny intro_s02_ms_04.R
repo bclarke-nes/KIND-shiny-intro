@@ -5,8 +5,7 @@ ui <- fluidPage(
   checkboxGroupInput(
     "org",
     label = "Select an org",
-    choices = c("RJ1", "RLN", "RXK"),
-    selected = "RJ1"
+    choices = c("RJ1", "RLN", "RXK")
   ),
   radioButtons(
     "type_select",
@@ -18,16 +17,12 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  output$compare_orgs <- renderPlot(
-    ae_attendances %>%
-      filter(org_code %in% input$org &
-               type == input$type_select) %>%
-      ggplot() +
-      geom_line(aes(
-        x = period, y = attendances, color = org_code
-      ))
-  )
-  
+  output$compare_orgs <- renderPlot(ae_attendances %>%
+                                      filter(org_code %in% c("RJ1", "RLN", "RXK") & type == "1") %>%
+                                      ggplot() +
+                                      geom_line(aes(
+                                        x = period, y = attendances, color = org_code
+                                      )))
 }
 
 shinyApp(ui, server)

@@ -25,8 +25,7 @@ ui <- fluidPage(
     label = "Pick a type:",
     choices = c("1", "2"),
     selected = "1"
-  ),
-  plotOutput("compare_orgs")
+  )
 )
 
 server <- function(input, output, session) {
@@ -34,6 +33,16 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+# ms 2 ----
+
+library(pacman)
+p_load(tidyverse, NHSRdatasets)
+
+ae_attendances %>%
+  filter(org_code %in% c("RJ1", "RLN", "RXK") & type == "1") %>%
+  ggplot() +
+  geom_line(aes(x = period, y = attendances, color = org_code))
 
 # ms 3 ----
 library(pacman)
@@ -133,6 +142,18 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+# ms 8 ----
+
+library(pacman)
+p_load(tidyverse, NHSRdatasets)
+
+ae_attendances %>%
+  filter(type == "1") %>%
+  group_by(period) %>%
+  summarise(attendances = mean(attendances)) %>%
+  ggplot() +
+  geom_line(aes(x = period, y = attendances), color = "darkblue")
 
 # ms 6 ----
 library(pacman)

@@ -135,7 +135,7 @@ Reactivity uses pairs of functions to pass things (user input, graphs, text) bet
 
 + `renderText` to pass the output of the standard R code lines 10-12 to `output$mean_att`
 + `textOutput("mean_att")` to insert that output in the UI. 
-+ `container=span` keeps text inline
++ `inline=T` keeps text inline
 
 ## Add a graph
 

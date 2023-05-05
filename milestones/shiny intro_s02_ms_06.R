@@ -18,13 +18,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  benchmark <- reactive({
-    ae_attendances %>%
-      filter(type %in% input$type_select) %>%
-      group_by(period) %>%
-      summarise(attendances = mean(attendances))
-  })
-  
   output$compare_orgs <- renderPlot(
     ae_attendances %>%
       filter(org_code %in% input$org &
@@ -32,19 +25,7 @@ server <- function(input, output, session) {
       ggplot() +
       geom_line(aes(
         x = period, y = attendances, color = org_code
-      )) +
-      geom_line(
-        data = benchmark(),
-        aes(x = period, y = attendances),
-        color = "darkblue"
-      ) + # call the reactive using the assigned name followed by ()
-      geom_label(
-        data = benchmark(),
-        aes(x = mean(period), y = mean(attendances)),
-        color = "darkblue",
-        label = "National benchmark"
-      )
-    
+      ))
   )
 }
 

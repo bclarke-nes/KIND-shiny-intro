@@ -12,8 +12,7 @@ ui <- fluidPage(
     label = "Pick a type:",
     choices = c("1", "2"),
     selected = "1"
-  ),
-  plotOutput("compare_orgs")
+  )
 )
 
 server <- function(input, output, session) {

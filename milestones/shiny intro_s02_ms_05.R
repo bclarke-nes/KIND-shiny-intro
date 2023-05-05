@@ -11,7 +11,7 @@ ui <- fluidPage(
   radioButtons(
     "type_select",
     label = "Pick a type:",
-    choices = sort(unique(ae_attendances$type)),
+    choices = c("1", "2"),
     selected = "1"
   ),
   plotOutput("compare_orgs")
@@ -27,6 +27,7 @@ server <- function(input, output, session) {
         x = period, y = attendances, color = org_code
       ))
   )
+  
 }
 
 shinyApp(ui, server)
