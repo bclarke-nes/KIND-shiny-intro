@@ -6,7 +6,7 @@
   + Shiny structure
   + function pairs (`render*()` and `output*()`)
   + input options
-+ extend those skills cross `ui()` and `server()` 
++ extend those skills across `ui()` and `server()` 
   + additional input selections
   + more powerful reactivity
   + more ambitious R code in `server()`
@@ -31,7 +31,7 @@ Time for the [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatshee
 
 Arguments:
 
-+ name
++ inputId
 + label
 + choices
 + selected
@@ -64,6 +64,7 @@ ae_attendances %>%
 
 
 What do we need to add to include a static version of the graph in our dashboard?
+
 + in `ui()`?
 + in `server()`?
 
