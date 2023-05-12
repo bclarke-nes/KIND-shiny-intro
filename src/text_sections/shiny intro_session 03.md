@@ -1,7 +1,8 @@
 ## Session learning outcomes
 
-+ outsourcing more complicated R code to a script
 + thinking about UI design using `shinydashboard`
++ outsourcing more complicated R code to a script
+
 
 ## Let's start with a blank(ish) script again
   
@@ -9,16 +10,26 @@
 
 ## Basic UI infrastucture
 
-+ `shinydashboard`
++ `shinydashboard` boilerplate
+
+```{verbatim}
+dashboardPage(
+    dashboardHeader(),
+    dashboardSidebar(),
+    dashboardBody()
+  )
+```
+![](../images/sdb.png){fig-align="center"}
 
 (MILESTONE 2)
 
-## `Shinydashboard`
+## `shinydashboard`
 
-+ much nicer default appearance
-+ `dashboardHeader()`
-+ `dashboardSidebar()`
-+ `dashboardBody()`
++ `dashboardPage()`
+  + `dashboardHeader()`
+  + `dashboardSidebar()`
+  + `dashboardBody()`
+    + `box()`
 
 We're going to work within the `dashboardBody()` today, and leave the header and sidebar for next time.
 
@@ -45,20 +56,24 @@ Let's look at the DD data now to see what we're likely to need
 ## Getting the data
 
 + there's a data-processing script in `/R/s03_data.R` that downloads and tidies the data for us. This makes four .rds data files from the open data:
-  + data/data.rds - the main delayed discharge data
-  + data/boards.rds - a tibble of board names and codes
-  + data/standardised_data.rds - delayed discharges per capita for the territorial NHS boards
-  + data/standardised_data_national.rds - delayed discharges per capita, national
+  + `data/data.rds` - the main delayed discharge data
+  + `data/boards.rds` - a tibble of board names and codes
+  + `data/standardised_data.rds` - delayed discharges per capita for the territorial NHS boards
+  + `data/standardised_data_national.rds` - delayed discharges per capita, national
 + we'll call that script from `R/s03.R`, which will also hold our functions
 
 ## Producing outputs
 
 + the aim is to do most of the processing in an R script, and just call the relevant parts from `server()`
-+ we'll need a new R script: please create `R/s03.R` and add the following...
++ lots of messing around with paths in Shiny: highly recommend `here()` / `i_am()`
++ please create `R/s03.R`
+  + create a vector of paths for the four `data/*.rds`
+  + add some code to check that all four exist
+    + if so, please load them to corresponding tibbles (so `data/data.rds` -> `data`)
+    + if not, please `source()` the `s03_data.R` script
+    
 
 (MILESTONE 04)
-
-+ note use of `here()` / `i_am()` - extremely helpful for Shiny
 
 ## Building a graph function
 
