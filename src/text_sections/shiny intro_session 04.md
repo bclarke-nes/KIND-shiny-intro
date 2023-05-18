@@ -6,7 +6,6 @@
   + adding s3 functions to dashboard sections
   + tweaks, tidying up, and story-telling
 
-  
 ## `shinydashboard` menu and sections
   
 + Let's start with a minimal shinydashboard `ui()`
