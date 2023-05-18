@@ -14,14 +14,16 @@ execute:
 ---
 ## Session learning outcomes
 
-+ `shinydashboard` menu and sections
-+ adding those new functions as pages in our dashboard
-+ tweaks, tidying up, and story-telling
-+ thinking about project architecture
++ working towards the final app
+  + `shinydashboard` menu and sections
+  + thinking about project architecture
+  + adding s3 functions to dashboard sections
+  + tweaks, tidying up, and story-telling
 
+  
 ## `shinydashboard` menu and sections
   
-+ Let's look again at the `ui()` that we had at the end of the last session
++ Let's start with a minimal shinydashboard `ui()`
 
 ## Milestone 01
 ```{r}
@@ -31,31 +33,13 @@ execute:
 ```
 
 ## `shinydashboard` `ui()`
-+ we'll add some elements to the page to allow us to show off the other graphs we drew last time. First, add some content to `dashboardHeader()`
+
+We'll add some elements to the page to allow us to show off the other graphs we drew last time.
+
++ `dashboardHeader()` first
   + add a `title = "whatever you like"`
   + optional `titleWidth` argument to preserve long titles
-
-## `dashboardSidebar()`
-+ set a `width =`, ideally corresponding with the `titleWidth` value from `dashboardHeader`
-+ `collapsed` TRUE/FALSE *au choix*
-+ `sidebarMenu()`
-  + 5 x `menuItem()`s, each containing:
-    + a tab title, for display
-    + `tabName = ` tab name
-    + `icon = icon("icon name")`
-    
-## Icons...
-+ really useful for dashboards, but poorly documented
-+ simple cases (like this one), supply a fontawesome icon name inside `icon()`
-  + e.g. `icon("info-circle")` becomes 
-
-```{r}
-#| echo: false
-#| eval: true
-shiny::icon("info-circle")
-```
-
-
+  + run app and check output
 
 ## Milestone 02
 ```{r}
@@ -64,6 +48,21 @@ shiny::icon("info-circle")
 #| file: ../milestones/shiny intro_s04_ms_02.R
 ```
 
+## `shinydashboard` `ui()`
+
++ lots of extra options too - drop-down menu example from `?dashboardHeader`
+
+![](../src/images/menu.png){fig-align="center"}
+
+## `dashboardSidebar()`
+
+This is a bit more complicated than the header, because we need to add some navigation options here.
+
++ prep work
+  + set a `width =`, ideally corresponding with the `titleWidth` value from `dashboardHeader`
+  + `collapsed` TRUE/FALSE *au choix*
++ then add `sidebarMenu()`
+
 ## Milestone 03
 ```{r}
 #| echo: true
@@ -71,12 +70,148 @@ shiny::icon("info-circle")
 #| file: ../milestones/shiny intro_s04_ms_03.R
 ```
 
+## `menuItem()`
+
+We then need to add a `menuItem()` inside the `sidebarMenu()` which will contain:
+  + a tab title, for display in the menu
+  + `tabName = ` - corresponding to one of the pages that we'll set up next
+  + `icon = icon("icon name")` (try `info-circle`)
+
 ## Milestone 04
 ```{r}
 #| echo: true
 #| eval: false
 #| file: ../milestones/shiny intro_s04_ms_04.R
 ```
+
+## Icons...
++ really useful for dashboards, but poorly documented
++ simple cases (like this one), supply a fontawesome icon name inside `icon()`
+  + e.g. `icon("info-circle")` becomes 
+  
+```{r}
+#| echo: false
+#| eval: true
+shiny::icon("info-circle")
+```
+see src/shiny_icons.qmd
+
+## `dashboardBody()`
+
+Now we need to add some content for our introduction tab.
+
++ `dashboardBody()` containing
+  + `tabItems()` containing
+    + `tabItem()` containing
+      + `tabName = "something"`
+      + our page content
+
+## Milestone 05
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_05.R
+```
+
+## Milestone 06
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_06.R
+```
+
+## Architecture
+
+This is all getting very long, even without any actual content in our pages.
+
++ Let's split the files up:
+  + app.R
+  + server.R
+  + ui.R
+
+## app.R
+
++ this `sources()` the server and ui from their files
++ then starts the shiny server
+
+## Milestone 07
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_07.R
+```
+
+## server.R
+
++ this contains our `server()` code
++ we can also e.g. `source()` external scripts
+
+## Milestone 08
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_08.R
+```
+
+## ui.R
+
++ this contains our `ui()` code
++ again, can bring in external code if we don't need it to be reactive
+
+## Milestone 09
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_09.R
+```
+
+## Please add your UI
+
+...then test your app (from app.R)
+
+## adding our functions to the dashboard
+
++ we should now be able to add code to server.R from last session
+
++ R/s04.R = updated version of the scripts we were working on last time
++ let's test `discharge_graph`. We'll need to add to server.R:
+
+## Milestone 10
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_10.R
+```
+
+...and we'll need to add to ui.R...
+
+## Milestone 11
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s04_ms_11.R
+```
+
+## Building out the board
+
++ 3 more functions to add in the same way
+  + `compare_boards` to compare DD counts by board
+  + `stand_compare_boards` to compare standardised DD rates by board
+  + `comp_map` to plot a simple map of standardised rates
+  
+That brings us fairly close to the finished article...
+
+<!-- something here to fill -->
+
+
+
+
+
+
+
+
+
+
 
   
  <!-- all milestones included -->

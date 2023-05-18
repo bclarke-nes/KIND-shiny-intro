@@ -3,7 +3,6 @@
 + thinking about UI design using `shinydashboard`
 + outsourcing more complicated R code to a script
 
-
 ## Let's start with a blank(ish) script again
   
 (MILESTONE 1)
