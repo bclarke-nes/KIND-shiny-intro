@@ -1,5 +1,8 @@
+# package loading ----
+## This script is source()'d by both the ui and the server - so a good place to ensure that libraries will be available in the right places
+
 library(pacman)
-p_load(shiny, shinydashboard, plotly, tidyverse, lubridate,  glue, ggrepel, here)
+p_load(shiny, shinydashboard, plotly, tidyverse, lubridate,  glue, ggrepel, sf, here)
 
 # data loading and processing ----
 # this script will either read processed data from rds files, or create them using s03_data.R if they do not exist

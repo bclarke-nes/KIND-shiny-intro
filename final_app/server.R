@@ -1,5 +1,4 @@
-library(pacman)
-p_load(shiny, shinydashboard, plotly, tidyverse, lubridate,  glue, ggrepel)
+source(here::here("final_app", 's04.R'), local=T)
 
 server <- function(input, output, session) {
   

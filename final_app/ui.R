@@ -1,7 +1,4 @@
-library(pacman)
-p_load(shiny, shinydashboard, plotly, tidyverse, lubridate,  glue, ggrepel)
-
-source('s04.R')
+source(here::here("final_app", 's04.R'), local=T)
 
 ui <- dashboardPage(
   dashboardHeader(title = "Delayed discharge dashboard", titleWidth = 350),

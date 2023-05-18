@@ -1,9 +1,9 @@
-library(pacman)
-p_load(shiny, shinydashboard, plotly, tidyverse, lubridate,  glue, ggrepel, sf)
-source('ui.R')
-source('server.R')
+library(here)
+
+source(here("final_app", 'ui.R'), local=T)
+source(here("final_app", 'server.R'), local=T)
 
 shinyApp(
-  ui = myUI,
-  server = myserver
+  ui = ui,
+  server = server
 )
