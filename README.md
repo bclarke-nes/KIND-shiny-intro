@@ -13,7 +13,7 @@ If you're new to R, we would suggest enrolling on our [Introductory R and Rmarkd
 
 ## What this training will cover
 
-This course will cover the basics of building a simple dashboard in Shiny. You can [see a live preview of the finished dashboard](https://l8865y-brendan-clarke.shinyapps.io/KIND_intro_shiny_final_app/). This will include:
+This course will cover the basics of building a simple dashboard in Shiny. This will include:
 
 + an introduction to Shiny and reactive programming
 + basic user interface design
