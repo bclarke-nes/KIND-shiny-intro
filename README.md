@@ -21,6 +21,8 @@ This course will cover the basics of building a simple dashboard in Shiny. This 
 + managing health and care data in Shiny, including using open data
 + storytelling and communication with Shiny
 
+You can see an example dashboard from the course via [shinyapps.io](https://l8865y-brendan-clarke.shinyapps.io/KIND_Shiny-Intro_Final-App/)
+
 ## Course format
 
 The training is delivered as a series of four live Teams session using [Posit
