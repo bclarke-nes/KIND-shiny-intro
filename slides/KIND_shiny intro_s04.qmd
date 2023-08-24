@@ -278,5 +278,11 @@ tags$div(
             "PHS delayed discharge bed days by health board")
 ```
 
+## Finishing off
+
++ [post-session evaluation](https://forms.office.com/e/kRrnr9QeCZ)
++ [*Mastering Shiny*](https://mastering-shiny.org/)
++ Development group
+
   
  <!-- all milestones included -->
