@@ -1,17 +1,8 @@
-library(pacman)
-p_load(shiny, shinydashboard)
+# app.R
+source("ui.R")
+source("server.R")
 
-ui <- fluidPage(
-  dashboardPage(
-    dashboardHeader(),
-    dashboardSidebar(),
-    dashboardBody()
-  )
-  
+shinyApp(
+  ui = ui,
+  server = server
 )
-
-server <- function(input, output, session) {
-  
-}
-
-shinyApp(ui, server)

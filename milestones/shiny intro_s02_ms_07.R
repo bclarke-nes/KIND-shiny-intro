@@ -1,9 +1,19 @@
 library(pacman)
-p_load(tidyverse, NHSRdatasets)
+p_load(shiny, tidyverse, NHSRdatasets)
 
-ae_attendances %>%
-  filter(type == "1") %>%
-  group_by(period) %>%
-  summarise(attendances = mean(attendances)) %>%
-  ggplot() +
-  geom_line(aes(x = period, y = attendances), color = "darkblue")
+ui <- fluidPage(
+  selectInput("input", "Pick a number", c(1, 2, "3")),
+  p("Your number is ", textOutput("text1", inline=T))
+)
+
+server <- function(input, output, session) {
+  output$text1 <- renderText(
+    if(input$input %% 2 == 0) {
+      "even"
+    } else {
+      "odd"
+    }
+  )
+}
+
+shinyApp(ui, server)

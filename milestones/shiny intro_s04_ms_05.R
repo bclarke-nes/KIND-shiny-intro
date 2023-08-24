@@ -7,11 +7,7 @@ ui <- dashboardPage(
   dashboardSidebar(width = 350, 
                    collapsed = F, 
                    sidebarMenu(menuItem("Introduction", tabName = "introduction", icon = icon("info-circle")))),
-  dashboardBody(tabItems(
-    # intro tab
-    tabItem(tabName = "introduction",
-            # need header
-            fluidRow(box(h2("Delayed discharge dashboard"))))))
+  dashboardBody()
 )
 
 server <- function(input, output, session) {

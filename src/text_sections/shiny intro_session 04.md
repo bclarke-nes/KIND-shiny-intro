@@ -1,33 +1,83 @@
 ## Session learning outcomes
 
-+ working towards the final app
+This is a 'putting it all together' session
+
++ layout in shiny
++ `shinydashboard`
+  + basic syntax 
   + `shinydashboard` menu and sections
-  + thinking about project architecture
-  + adding s3 functions to dashboard sections
-  + tweaks, tidying up, and story-telling
+  + boxes and valueboxes
++ looking towards a real dashboard
+
+
+## `fluidRow()` and `column()` 
+
++ shiny layout is based on a grid
++ nice guidance in the [Shiny docs](https://shiny.posit.co/r/articles/build/layout-guide/)
++ rows and columns
+  + 12 is the magic number
+
+. . .
+
+![](../src/images/grid.png)
+
+(MILESTONE 1)
+
+## `shinydashboard`
+
++ it's perfectly possible to do all the layout you'd ever want in base shiny
+  + HTML
+  + `shiny::tags()`
+  + JavaScript
+  + `renderUI()`
+  + ...
++ but for most of us, the tweaking is slow and painful
++ `shinydashboard` has three major advantages
+  + it looks nice without much tweaking
+  + it's really easy to use, even if you've not done web development work before
+  + it's got some brilliant pre-packed visualisation tools
 
 ## `shinydashboard` menu and sections
   
 + Let's start with a minimal shinydashboard `ui()`
 
-(MILESTONE 1)
+(MILESTONE 2)
+
+## Basic UI infrastucture
+
+```{verbatim}
+dashboardPage(
+  dashboardHeader(),
+  dashboardSidebar(),
+  dashboardBody()
+)
+```
+
+. . .
+
+![](../src/images/sdb.png){fig-align="center"}
+
 
 ## `shinydashboard` `ui()`
 
-We'll add some elements to the page to allow us to show off the other graphs we drew last time.
+Let's start populating these elements
 
 + `dashboardHeader()` first
   + add a `title = "whatever you like"`
   + optional `titleWidth` argument to preserve long titles
   + run app and check output
 
-(MILESTONE 2)
+(MILESTONE 3)
+
 
 ## `shinydashboard` `ui()`
 
 + lots of extra options too - drop-down menu example from `?dashboardHeader`
 
+. . .
+
 ![](../src/images/menu.png){fig-align="center"}
+
 
 ## `dashboardSidebar()`
 
@@ -36,111 +86,146 @@ This is a bit more complicated than the header, because we need to add some navi
 + prep work
   + set a `width =`, ideally corresponding with the `titleWidth` value from `dashboardHeader`
   + `collapsed` TRUE/FALSE *au choix*
-+ then add `sidebarMenu()`
 
-(MILESTONE 3)
-
-## `menuItem()`
-
-We then need to add a `menuItem()` inside the `sidebarMenu()` which will contain:
-  + a tab title, for display in the menu
-  + `tabName = ` - corresponding to one of the pages that we'll set up next
-  + `icon = icon("icon name")` (try `info-circle`)
 
 (MILESTONE 4)
 
+  
+## `dashboardSidebar()`
+
++ then add `sidebarMenu()` inside the `dashboardSidebar()`
++ then add a `menuItem()` inside the `sidebarMenu()`. Each `menuItem()` needs:
+    + a tab title, for display in the menu
+    + `tabName = ` - corresponding to one of the pages that we'll set up next
+    + `icon = icon("icon name")` (try `info-circle`)
+    
+(MILESTONE 4)
+
 ## Icons...
+
 + really useful for dashboards, but poorly documented
 + simple cases (like this one), supply a fontawesome icon name inside `icon()`
-  + e.g. `icon("info-circle")` becomes 
-  
-```{r}
-#| echo: false
-#| eval: true
-shiny::icon("info-circle")
-```
-see src/shiny_icons.qmd
+  + e.g. `icon("info-circle")` becomes `r shiny::icon("info-circle")`
+  + `icon("chart-bar")` becomes `r shiny::icon("chart-bar")`
+  + `icon("lungs-virus")` becomes `r shiny::icon("lungs-virus")`
+  + ...
+
+## Icons...
+
+![](../src/images/icons.png)
+
+and see `src/shiny_icons.qmd`
 
 ## `dashboardBody()`
 
-Now we need to add some content for our introduction tab.
+Now we need to add some content to our page
 
 + `dashboardBody()` containing
   + `tabItems()` containing
     + `tabItem()` containing
-      + `tabName = "something"`
+      + `tabName = "something"` ← corresponding to the `menuItem` `tabName`
       + our page content
-
-(MILESTONE 5)
 
 (MILESTONE 6)
 
-## Architecture
+## `box()`
++ specific to shinydashboard
++ quick way of putting content on a tile
++ [Nice guidance in the shinydashboard docs](https://rstudio.github.io/shinydashboard/structure.html)
 
-This is all getting very long, even without any actual content in our pages.
+. . .
 
-+ Let's split the files up:
-  + app.R
-  + server.R
-  + ui.R
+![](../src/images/boxes.png)
 
-## app.R
+(MILESTONE 6)
 
-+ this `sources()` the server and ui from their files
-+ then starts the shiny server
+## `valueBox()`
++ another shinydashboard-specific
++ these can be generated in either `ui()` or `server()`
+
+. . .
+
+![](../src/images/valueboxes.png)
 
 (MILESTONE 7)
 
-## server.R
+## Looking towards a real dashboard
 
-+ this contains our `server()` code
-+ we can also e.g. `source()` external scripts
++ we'll use the rest of this session looking at a real-ish Shiny dashboard
++ there's an example in the `final_app/` folder
++ please run that now (from the `app.R` script)
 
-(MILESTONE 8)
+## Similarities & differences
 
-## ui.R
++ basically built using the methods described in this course
++ but more complicated
+  + plenty to see in `ui.R`
+  + almost nothing to see in `server.R`
+  + lots of script gubbins in `s04.R`
+  + boilerplate only in `app.R`
 
-+ this contains our `ui()` code
-+ again, can bring in external code if we don't need it to be reactive
+## Data sources
 
-(MILESTONE 9)
+This uses real data:
 
-## Please add your UI
-
-...then test your app (from app.R)
-
-## adding our functions to the dashboard
-
-+ we should now be able to add code to server.R from last session
-
-+ R/s04.R = updated version of the scripts we were working on last time
-+ let's test `discharge_graph`. We'll need to add to server.R:
-
-(MILESTONE 10)
-
-...and we'll need to add to ui.R...
-
-(MILESTONE 11)
-
-## Building out the board
-
-+ 3 more functions to add in the same way
-  + `compare_boards` to compare DD counts by board
-  + `stand_compare_boards` to compare standardised DD rates by board
-  + `comp_map` to plot a simple map of standardised rates
+. . .
   
-That brings us fairly close to the finished article...
+  + [PHS delayed discharge bed days by health board](https://www.opendata.nhs.scot/dataset/52591cba-fd71-48b2-bac3-e71ac108dfee/resource/fd354e4b-6211-48ba-8e4f-8356a5ed4215/)
++ [PHS health board names and geography codes](https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc)
++ [PHS population estimates](https://www.opendata.nhs.scot/dataset/7f010430-6ce1-4813-b25c-f7f335bdc4dc/resource/27a72cc8-d6d8-430c-8b4f-3109a9ceadb1)
 
-<!-- something here to fill -->
+## Getting the data
+
++ there's a data-processing script in `/R/s03_data.R` that downloads and tidies the data for us
++ this makes four .rds data files from the open data:
+  + `data/data.rds` - the main delayed discharge data
+  + `data/boards.rds` - a tibble of board names and codes
+  + `data/standardised_data.rds` - delayed discharges per capita for the territorial NHS boards
+  + `data/standardised_data_national.rds` - delayed discharges per capita, national
 
 
+## Let's start with the script: `s04.R`
++ lines 1-25 are just package and data loading
+  + package loading using `pacman()`
+  + set up a vector of data file paths using `here()`
+  + reading/making four data files, and a shape file, using `/R/s03_data.R` / `read_rds()`
+  
++ then defining four functions
+  + `discharge_graph()`
+  + `compare_boards()`
+  + `stand_compare_boards()`
+  + `comp_map()`
+  
+## Now the `server.R`
 
++ `source()` the `s04.R` script
++ wrap each of the four functions in `renderPlot(ly)`
++ connect a bunch of inputs to those functions 
+ + `input$data`, `input$rate_board_select`, `input$rate_age_select`, `input$date_range`, `input$rate_select`, `input$age_select`, `input$scot_nat_comp`, `input$map_date`, `input$map_age_select`
 
+## Now the `ui.R`
 
++ plenty to see, but really just repeated building blocks
++ `shinydashboard` with 4 `menuItems`
++ `fluidRow()` and `box()` to organise content
++ `h2()` and `p()` to do heading and text formatting
+ + inputs via `dateRangeInput()` / `selectInput()` / `checkboxGroupInput()` / `radioButtons()`
++ revolting messing around to give a bulleted list of links
 
+. . .
 
+```{verbatim}
+tags$div(
+  tags$ul(
+    tags$li(
+      tags$a(href = "https://www.opendata.nhs.scot/dataset/52591cba-fd71-48b2-bac3-e71ac108dfee/resource/fd354e4b-6211-48ba-8e4f-8356a5ed4215/", 
+            "PHS delayed discharge bed days by health board")
+```
 
+## Finishing off
 
++ [post-session evaluation](https://forms.office.com/e/kRrnr9QeCZ)
++ [*Mastering Shiny*](https://mastering-shiny.org/)
++ Development group
 
-
-
+<!-- secret sauce -->

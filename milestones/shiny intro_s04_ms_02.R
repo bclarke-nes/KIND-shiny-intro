@@ -1,13 +1,10 @@
 library(pacman)
 p_load(shiny, shinydashboard)
 
-ui <- dashboardPage(
-  dashboardHeader(title = "Delayed discharge dashboard", 
-                  titleWidth = 350),
-  dashboardSidebar(),
-  dashboardBody()
-)
+ui <- dashboardPage(dashboardHeader(),
+                    dashboardSidebar(),
+                    dashboardBody()
+                    )
 
-server <- function(input, output, session) {
-}
+server <- function(input, output, session) {}
 shinyApp(ui, server)

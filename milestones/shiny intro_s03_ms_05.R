@@ -1,4 +1,17 @@
-data %>%
-  filter(HBName == "NHS Borders") %>%
-  ggplot() +
-  geom_line(aes(x=MonthOfDelay, y=Total, color=AgeGroup))
+library(pacman)
+p_load(shiny, shinydashboard)
+
+ui <- fluidPage(
+  dashboardPage(
+    dashboardHeader(),
+    dashboardSidebar(),
+    dashboardBody()
+  )
+  
+)
+
+server <- function(input, output, session) {
+  
+}
+
+shinyApp(ui, server)

@@ -1,151 +1,276 @@
 ## Session learning outcomes
 
-+ thinking about UI design using `shinydashboard`
+Today is all about project architecture
+
++ splitting Shiny projects into UI/server/app
 + outsourcing more complicated R code to a script
++ outsourcing helpers
+  + `glue()`
+  + `here()`
++ writing functions in Shiny
+  + `browser()`
++ adding functions to your dashboard
+
+## Rationale
+
++ Shiny gets complicated!
++ this session shows how to manage that complexity
+  + we can split shiny scripts into separate UI, server, and app files
+  + we can move chunks of R code into separate scripts
+  + we can turn repetitious code into functions
 
 ## Let's start with a blank(ish) script again
   
 (MILESTONE 1)
 
-## Basic UI infrastucture
+## Splitting shiny scripts
 
-+ `shinydashboard` boilerplate
++ this tiny shiny has three sections - UI/server/app
++ we can split those up into three different files:
+  + app.R
+  + server.R
+  + ui.R
 
-```{verbatim}
-dashboardPage(
-    dashboardHeader(),
-    dashboardSidebar(),
-    dashboardBody()
-  )
-```
-![](../images/sdb.png){fig-align="center"}
+## app.R
+
++ this `sources()` the server and ui from their files
++ then starts the shiny server
 
 (MILESTONE 2)
 
-## `shinydashboard`
+## server.R
 
-+ `dashboardPage()`
-  + `dashboardHeader()`
-  + `dashboardSidebar()`
-  + `dashboardBody()`
-    + `box()`
-
-We're going to work within the `dashboardBody()` today, and leave the header and sidebar for next time.
++ this contains our `server()` code
++ we can also e.g. `source()` external scripts
 
 (MILESTONE 3)
 
-## Data sources
+## ui.R
 
-With that UI framework in place, we can start thinking about building a dashboard to use real data: 
++ this contains our `ui()` code
++ again, can bring in external code here too
++ **important:** it probably makes most sense to do package loading here too
 
-+ [PHS delayed discharge bed days by health board](https://www.opendata.nhs.scot/dataset/52591cba-fd71-48b2-bac3-e71ac108dfee/resource/fd354e4b-6211-48ba-8e4f-8356a5ed4215/)
-+ [PHS health board names and geography codes](https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc)
-+ [PHS population estimates](https://www.opendata.nhs.scot/dataset/7f010430-6ce1-4813-b25c-f7f335bdc4dc/resource/27a72cc8-d6d8-430c-8b4f-3109a9ceadb1)
+(MILESTONE 4)
 
-Let's look at the DD data now to see what we're likely to need
+## Outsourcing complicated code
 
-## DD data architecture
++ we can bring in R scripts into our Shiny using `source()`
++ this is a great way to manage complexity
++ also brilliant for converting existing R scripts into Shiny
++ simple: dump all the scripts that you want into the `R/` directory
 
-+ HBT
-+ AgeGroup
-+ Number
+## Controlling what goes in in `R/`
 
-![](..//src//images//dd_structure.png)
++ Shiny automatically sources files in `R/`
++ I'd recommend turning this off and `source()`-ing scripts by hand
+    + tends to generate package loading problems
+    + in more complex projects, knowing what's in your R directory is a serious pain
++ Place a file named _disable_autoload.R in the R/ directory
++ Set `options(shiny.autoload.r = FALSE)` inside `shinyApp()`
+  + this one gets messy though - harder to understand exactly what gets affected
+  + see discussion [in the Shiny docs](https://shiny.posit.co/r/articles/build/app-formats/)
 
-## Getting the data
+## Getting at script outputs
 
-+ there's a data-processing script in `/R/s03_data.R` that downloads and tidies the data for us. This makes four .rds data files from the open data:
-  + `data/data.rds` - the main delayed discharge data
-  + `data/boards.rds` - a tibble of board names and codes
-  + `data/standardised_data.rds` - delayed discharges per capita for the territorial NHS boards
-  + `data/standardised_data_national.rds` - delayed discharges per capita, national
-+ we'll call that script from `R/s03.R`, which will also hold our functions
-
-## Producing outputs
-
-+ the aim is to do most of the processing in an R script, and just call the relevant parts from `server()`
-+ lots of messing around with paths in Shiny: highly recommend `here()` / `i_am()`
-+ please create `R/s03.R`
-  + create a vector of paths for the four `data/*.rds`
-  + add some code to check that all four exist
-    + if so, please load them to corresponding tibbles (so `data/data.rds` -> `data`)
-    + if not, please `source()` the `s03_data.R` script
-    
-
-(MILESTONE 04)
-
-## Building a graph function
-
-Now we'll need to build some `ggplot` to:
-
-+ filter `data` for one health board
-+ plot the `Total` against `MonthOfDelay`
-
-(MILESTONE 05)
-
-+ try testing this code now in `s03.R`
-+ once it's working, you should create a `discharge_graph` function from it:
-  + argument - board name
-  + return - appropriate graph. 
-  
-The first step is to create an empty function called  that takes a single argument...
-
-(MILESTONE 06)
-
-Once we've got that set-up, we can insert the `ggplot` code, and adapt as appropriate. 
-
-+ No need to {{embrace}} the argument
-
-(MILESTONE 07)
-
-Once we've got this in place (and tested) we can do a bit of beautifying:
-
-(MILESTONE 08)
-
-`glue()` is very helpful for making appropriate labels.
-
-## Changes in `ui()`
-
-We can now put the appropriate elements into the UI
-
-+ a couple of `fluidRow()`s, containing
-  + a `box()` with a `selectInput()` for the boards
-  + a `plotOutput()` for our graph
-
-(MILESTONE 08)
-
-## Changes in `server()`
-
-+ `isolate()`, which is a way of safely `source()`-ing scripts inside `server()`
-  + useful explanation from [the Shiny manual](https://shiny.rstudio.com/articles/isolation.html)
-+ the single function call to `delayed_discharge()` with appropriate `input$x`
-
-(MILESTONE 09)
++ if you assign something to the global environment in your script, you'll have that thing wherever you `source()` that script
++ if you define functions, they'll be available wherever you `source()`
++ there are ways of controlling how scripts respond to inputs using `isolate()`
+    + useful explanation from [the Shiny manual](https://shiny.rstudio.com/articles/isolation.html)
 
 
+## Two vital helpers for using scripts
 
-## Developing the script
++ `glue()`
++ `here()`
 
-(we're pretty-well back to the starting demo dashboard from session 1 here, so congratulations!)
+## `glue::glue()`
 
-With the eventual aim of developing the full dashboard, we'll now add three more functions to `s03.R`:
++ try it!
 
-+ `compare_boards()` - to compare DD counts between boards
-  + three arguments: boards, age, date_range
-+ `stand_compare_boards()` - to compare DD rates between boards
-  + three arguments: boards, age, scot
-+ `comp_map()` - to map DD rates relative to national average
-  + three arguments: month_r, age, comp
+. . .
 
-(MILESTONE 10)
+```{r}
+#| echo: true
+#| eval: true
 
-(MILESTONE 11)
+library(glue)
+name <- "Janine"
+glue("Hi {name}")
+```
 
-(MILESTONE 12)
+## `here::here()`
 
-## Next time!
++ a way of avoiding messing around with file paths
++ e.g. you're going to have scripts in R/ that *think* they're in the project root because of `source()`
+    + that can cause standard methods of describing paths to fail
+    + this is a pain to debug
 
-+ `shinydashboard` menu and sections
-+ adding those new functions as pages in our dashboard
-+ tweaks, tidying up, and story-telling
-+ thinking about project architecture
+
+## `here::here()`
+
++ more folders = more file location specification needed
++ `here` - a way of solving complicated file location problems
++ subfolders are portable - so if you move the project folder to another location, everything will still work
++ easy to use - [great vignette](https://cran.r-project.org/web/packages/here/vignettes/here.html)
+
+## how `here()`?
++ step 1: set a starting location for `here` to work from:
+
+. . . 
+
+```{r}
+#| echo: true
+here::i_am("app.R")
+library(here)
+
+```
++ note non-standard order - load `i_am` via namespacing, then load the package itself
++ do this once per project at the start of the first script that's going to run - probably in app.R?
+
+## how `here()`?
++ step 2: replace paths with relative paths inside `here`
++ `here` will convert the path into a proper absolute path
+
+## how `here()`?
+
+::: {.panel-tabset}
+
+### relative path from project
+
+```{r}
+#| results: asis
+#| echo: true
+read_csv("data/subfolder/subsubfolder/hidden_data.csv") 
+```
+
+### here from hierarchy of folders
+
+```{r}
+#| results: asis
+#| echo: true
+read_csv(here("data", "subfolder", "subsubfolder", "hidden_data.csv"))
+```
+
+### here from a relative path
+```{r}
+#| results: asis
+#| echo: true
+read_csv(here("data/subfolder/subsubfolder/hidden_data.csv"))
+```
+
+### here from a partial path and file name
+```{r}
+#| results: asis
+#| echo: true
+data_path <- "data/subfolder/subsubfolder"
+
+read_csv(here(data_path, "hidden_data.csv"))
+```
+
+
+### here from a partial path fragments and file name
+```{r}
+#| results: asis
+#| echo: true
+data_path_frags <- c("data", "subfolder", "subsubfolder", "useless_subsubfolder")
+
+file_name <- "hidden_data.csv"
+
+read_csv(here(paste(data_path_frags[1:3], collapse="/"), file_name))
+```
+:::
+
+## writing functions in Shiny
+
+```{r}
+
+function_name <- function(argument){
+  # some code here using the argument
+}
+
+```
+
++ we'll practice with a minimal function...
+
+## writing functions in Shiny
+
+```{r}
+#| echo: true
+#| eval: true
+
+library(tidyverse)
+library(NHSRdatasets)
+
+ae_attendances |>
+  filter(type == "1") |>
+  group_by(org_code) |>
+  summarize(across(where(is.numeric), sum)) |>
+  ggplot(aes(x=admissions, y=breaches, size=attendances)) +
+  geom_point(color="steelblue4", alpha=1/3) +
+  geom_smooth(color="steelblue4", se=F) +
+  theme_minimal() +
+  theme(legend.position="none")
+
+```
+
+## writing functions in Shiny
+
++ turning this code into a function means we can more easily re-use it
++ all we need to do is:
+    + decide on a name for our function
+    + wrap the code in `function()`
+
+. . .
+
+```{r}
+#| echo: true
+#| eval: true
+
+att_graph <- function(){
+  ae_attendances |>
+    filter(type == "1") |>
+    group_by(org_code) |>
+    summarize(across(where(is.numeric), sum)) |>
+    ggplot(aes(x=admissions, y=breaches, size=attendances)) +
+    geom_point(color="steelblue4", alpha=1/3) +
+    geom_smooth(color="steelblue4", se=F) +
+    theme_minimal() +
+    theme(legend.position="none")
+  }
+
+```
+
+## writing functions in Shiny
+
++ to use the function, we just call it like any other function:
+
+. . .
+
+```{r}
+#| echo: true
+#| eval: true
+
+att_graph()
+
+```
+
+## writing functions in Shiny
+
++ most of the time, we'll want to add arguments to our function
++ these will usually come from our UI input
+
+## writing functions in Shiny practice
+
++ start in a new project
++ create an empty Shiny in app.R
++ create an R/ folder
++ create an empty R script in the R/ folder
+
+## `browser()` demo
+
+## Next time...
++ 'putting it all together' - taking the elements from these sessions, and starting to build a proper dashboard
++ shinydashboard will help!
+
+<!-- secret sauce -->

@@ -4,8 +4,7 @@ p_load(shiny, shinydashboard)
 ui <- dashboardPage(
   dashboardHeader(title = "Delayed discharge dashboard", 
                   titleWidth = 350),
-  dashboardSidebar(width = 350, 
-                   collapsed = F),
+  dashboardSidebar(),
   dashboardBody()
 )
 

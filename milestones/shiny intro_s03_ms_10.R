@@ -1,30 +1,6 @@
-library(pacman)
-p_load(shiny, shinydashboard)
-
-ui <- fluidPage(
-  dashboardPage(
-    dashboardHeader(),
-    dashboardSidebar(),
-    dashboardBody(h2("Comparing delayed discharge rate between boards"),
-                  
-                  fluidRow(plotOutput("graph"),) ,
-                  fluidRow(
-                    box(
-                      title = "Controls",
-                      selectInput("board", "Pick a board:", unique(boards$HBName))
-                    )
-                  )
-    )
-  )
-  
-)
-
-server <- function(input, output, session) {
-  isolate(source(here("R", "s03.R"), local = TRUE))
-  
-  output$graph <- renderPlot(
-    discharge_graph(input$board)
-  )
+discharge_graph <- function(board) {
+  data %>%
+    filter(HBName == board) %>%
+    ggplot() +
+    geom_line(aes(x=MonthOfDelay, y=Total, color=AgeGroup))
 }
-
-shinyApp(ui, server)

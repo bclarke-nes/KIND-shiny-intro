@@ -1,24 +1,25 @@
 ---
-title: "KIND Introductory Shiny"
+title: "Introductory Shiny"
 subtitle: "session 2"
 author: "Brendan Clarke"
 format: 
     revealjs:
+        incremental: true
         logo: "..//src//images//KLN_banner_v05_125.png"
         css: "..//src//images//logo.css"
+        embed-resources: true
 scrollable: true
 smaller: true
 execute: 
     echo: true
     eval: false
 ---
-## Session goal: make the dashboard more useful
 
 ## Session learning outcomes
 
 + consolidate session one
   + Shiny structure
-  + function pairs (`render*()` and `output*()`)
+  + function pairs (`render🤷()` and `🤷Output()`)
   + input options
 + extend those skills across `ui()` and `server()` 
   + additional input selections
@@ -34,6 +35,36 @@ Let's start again with an empty Shiny app. During this session, we'll build this
 + includes a national average benchmark
 + and uses several kinds of interactivity
 
+## about ae_attendances
+
+```{r}
+#| echo: false
+#| eval: true
+library(pacman)
+p_load(NHSRdatasets, tidyverse)
+ae_attendances |>
+  slice(1:5) |>
+  knitr::kable()
+
+```
+
+## about ae_attendances
+
+```{r}
+#| echo: false
+#| eval: true
+
+ae_attendances |>
+  filter(org_code == "RF4") |>
+  ggplot(aes(x=period, y=attendances, color=type)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ type, nrow=1, scales="free") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+  
+```
+
 ## Milestone 01
 ```{r}
 #| echo: true
@@ -45,8 +76,12 @@ Let's start again with an empty Shiny app. During this session, we'll build this
 
 Time for the [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
 
+. . .
+
 + `checkboxGroupInput()`
 + `radioButtons()`
+
+. . .
 
 Arguments:
 
@@ -104,7 +139,7 @@ What do we need to add to include a static version of the graph in our dashboard
 #| file: ../milestones/shiny intro_s02_ms_04.R
 ```
 
-Note this is not interactive - we've just put the static R code into the `server()`
+Just put the static R code into the `server()`
 
 ## Adding interactivity
 
@@ -139,12 +174,22 @@ Typing values for users to select from is tedious. Can we cheat to get R to do t
 
 We could do something similar for the orgs too, which we'll do later.
 
-## Adding a national benchmark
+## Digression - development cycle in Shiny
 
-+ get the R code working
-+ add that code to `server()`
-+ add `ui()` options
++ get some R code working in a script
++ add that code to `server()` to run statically
++ add `ui()` options and link to `server()` to add interactivity
 + test
++ repeat
+
+## Debugging
+
+(see [*Mastering Shiny* chapter 5](https://mastering-shiny.org/action-workflow.html#debugging), or the [Debugging Shiny](https://shiny.posit.co/r/articles/improve/debugging/) page)
+
++ error messages in your output
++ call stack
++ print debugging
++ `browser()`
 
 ## Milestone 07
 ```{r}
@@ -153,28 +198,78 @@ We could do something similar for the orgs too, which we'll do later.
 #| file: ../milestones/shiny intro_s02_ms_07.R
 ```
 
-## Adding the benchmark code to `server()`
+## Error messages
 
-+ We only want the benchmark to update when we switch type
-+ to do that, we'll use `reactive()`
+![](../src/images/error_msg.png)
 
-To make a `reactive()`:
-```{!r}
-benchmark <- reactive({
-<<code>>
-})
-```
 
-To use a `reactive()`:
+## Call stack / traceback
 
-+ special way of calling reactive objects, similar to a function
-+ `data = benchmark()` etc
+![](../src/images/call_stack.png)
+
 
 ## Milestone 08
 ```{r}
 #| echo: true
 #| eval: false
 #| file: ../milestones/shiny intro_s02_ms_08.R
+```
+
+
+## Print debugging
+![](../src/images/print_debugging.png)
+
+
+## `browser()`
+
+## Milestone 09
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s02_ms_09.R
+```
+
+## Adding a national benchmark
+
++ we'll need to write some R code to
+    + take our data
+    + filter for type == 1
+    + calculate mean attendances for each month
+
+## Milestone 10
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s02_ms_10.R
+```
+
+## Adding the benchmark code to `server()`
+
++ We only want the benchmark to update when we switch type
++ to do that, we'll use `reactive()`
+
+. . .
+
+To make a `reactive()`:
+
+```{!r}
+benchmark <- reactive({
+<<code>>
+})
+```
+
+. . .
+
+To use a `reactive()`:
+
++ special way of calling reactive objects, similar to a function
++ `data = benchmark()` etc
+
+## Milestone 11
+```{r}
+#| echo: true
+#| eval: false
+#| file: ../milestones/shiny intro_s02_ms_11.R
 ```
 
 Lots going on here!
@@ -192,6 +287,8 @@ Lots going on here!
 
 + set-up a vector of key orgs where data is available for all the months and add to UI using checkboxGroupInput
 
+. . .
+
 ```{r}
 key_orgs <- ae_attendances %>%
   group_by(period, org_code) %>%
@@ -206,16 +303,16 @@ key_orgs <- ae_attendances %>%
 ```
 + `ggplotly()`, `renderPlotly()`, and `plotlyOutput()`
 
-## Milestone 09
+## Milestone 12
 ```{r}
 #| echo: true
 #| eval: false
-#| file: ../milestones/shiny intro_s02_ms_09.R
+#| file: ../milestones/shiny intro_s02_ms_12.R
 ```
 
 ## Finishing touches
 
-Conditional execution for our benchmark
+Conditional execution for our benchmark might be a nice touch?
 
   + add `checkboxInput()` to `ui()`
   + add a new `reactive()` object from that input
@@ -223,20 +320,15 @@ Conditional execution for our benchmark
     + in the `TRUE` arm of that `if`/`else`, add the benchmarked `ggplot`
     + in the `FALSE` arm of that `if`/`else`, add the non-benchmarked `ggplot`
 
-## Milestone 10
+## Milestone 13
 ```{r}
 #| echo: true
 #| eval: false
-#| file: ../milestones/shiny intro_s02_ms_10.R
+#| file: ../milestones/shiny intro_s02_ms_13.R
 ```
 
 ## Next time...
-+ outsourcing more complicated R code to a script
-+ thinking about UI design
-
-
-
-
++ project architecture and managing complexity in Shiny
 
   
  <!-- all milestones included -->

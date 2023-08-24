@@ -3,17 +3,44 @@ library(pacman)
 p_load(shiny)
 
 ui <- fluidPage(
-  
 )
 
 server <- function(input, output, session) {
-  
 }
-
 
 shinyApp(ui, server)
 
 # ms 2 ----
+
+# app.R
+source("ui.R")
+source("server.R")
+
+shinyApp(
+  ui = ui,
+  server = server
+)
+
+# ms 3 ----
+
+# server.R
+server <- function(input, output, session) {
+}
+
+# ms 4 ----
+
+# ui.R
+library(tidyverse)
+ui <- dashboardPage( ... )
+
+
+
+
+
+
+
+
+# ms 5 ----
 library(pacman)
 p_load(shiny, shinydashboard)
 

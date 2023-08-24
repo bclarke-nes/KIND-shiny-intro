@@ -1,14 +1,31 @@
+## Before we start
+
++ [pre-session evaluation](https://forms.office.com/e/zm56W304SH)
++ this is the start of a journey, not a destination
+
 ## About this course
-This is an accessible introduction to Shiny
 
-+ Social
-
-::: {.callout-note}
-Cameras on as much as possible, please
+::: {.incremental}
+- an accessible introduction to Shiny
+- it assumes basic familiarity with R and Posit/Rstudio
+- aimed at users in health, social care, and housing
+- it's social, so we'll all learn together
+  - it's not just going to be me talking
+- it's practical, so we'll all work through the material together
+  - we don't record the sessions - they're meant to be taken live
+- please be ready to share your problems or mistakes 
+  - they're the most effective way to learn
+  - we'll solve problems together
 :::
 
-+ Collaborative, particularly for troubleshooting
-+ Assumes basic familiarity with R and Posit/Rstudio
+## About this course
+
+:::: callout-important
++ please keep your camera on as much as you can
++ please interrupt, ask questions, etc
++ please try the tasks
++ please share your mistakes
+::::
 
 ## Session 1 outline
 1. getting started with Posit
@@ -59,6 +76,8 @@ Cameras on as much as possible, please
   * via open SaaS platforms, like [shinyapps.io](https://www.shinyapps.io/)
   * Dedicated platforms via Shiny server, SPACe Analytical Workbench...
 
+. . .
+
 ::: {.callout-tip}
 
 Great primer on deploying Shiny: [Rstudio Shiny tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson7/)
@@ -68,12 +87,18 @@ Great primer on deploying Shiny: [Rstudio Shiny tutorial](https://shiny.rstudio.
   
 ## Dashboard demo
 
-![](../images/dd_preview.png){fig-align="center"}
-
-(we'll be at this point in two weeks)
+![](../src/images/dd_preview.png){fig-align="center"}
 
 (MILESTONE 01)
 
+## A word of warning
+
++ Shiny code looks much more complicated than most R code
++ That means that we'll work with simplified examples in these sessions
++ That's something to be wary about, because there might be a gap between the simplified version, and what you encounter when you build your own products
+  + We'll explore a more true-to-life example in the final session
+  + Please consider joining the follow-up development groups
+  
 ## R vs Shiny
 
 ::: {.callout-warning}
@@ -82,9 +107,12 @@ While Shiny's syntax looks very similar to R, the programming approach is totall
 
 :::
 
-R is usually **imperative** - "do the following things in this order..."
+. . .
 
-Shiny is **declarative** - "here are our goals and constraints..." 
++ R is usually **imperative** - "do the following things in this order..."
++ Shiny is **declarative** - "here are our goals and constraints..." 
+
+. . .
 
 > With imperative code you say “Make me a sandwich”. With declarative code you say “Ensure there is a sandwich in the refrigerator whenever I look inside of it”. Imperative code is assertive; declarative code is passive-aggressive.
 
@@ -95,13 +123,20 @@ Shiny is **declarative** - "here are our goals and constraints..."
 1. Create a new (empty) file called `app.R`
 2. click in the source pane, and start typing `Shiny`...
 
-![](..//images//image-2077227059.png){fig-align="center"}
+. . .
+
+![](..//src//images//image-2077227059.png){fig-align="center"}
+
 
 (MILESTONE 02)
 
 (MILESTONE 03)
 
+. . .
+
 + Note the `output$message` - this is how we pass the body of the message to the `textOutput` part of the UI
+
+. . .
 
 ::: {.callout-tip}
 
@@ -112,7 +147,7 @@ Shiny is **declarative** - "here are our goals and constraints..."
 
 ## `diffr`
 
-![](../images/diffr.png){fig-align="center"}
+![](../src/images/diffr.png){fig-align="center"}
 
 ## Anatomy of a Shiny app
 
@@ -121,6 +156,8 @@ We need at least three elements for a Shiny app:
 1. UI - containing the code for the front-end user interface
 2. Server - containing the code for the back-end (e.g. plotting graphs etc)
 3. Call to `shinyApp` - that launches the app
+
+. . .
 
 These can be split into separate files, or contained in one `app.R` script. We'll start with the single file for now, but will start to split things up as our scripts grow.
 
@@ -133,19 +170,23 @@ Reactivity uses pairs of functions to pass things (user input, graphs, text) bet
 
 (MILESTONE 04)
 
-+ `renderText` to pass the output of the standard R code lines 10-12 to `output$mean_att`
++ `renderText` to pass the output of the standard R code lines 7-10 to `output$mean_att`
 + `textOutput("mean_att")` to insert that output in the UI. 
 + `inline=T` keeps text inline
 
 ## Add a graph
 
-Let's now add a second pair of functions:
+Let's try adding a different element
 
-+ add `plotOutput()` to the UI (separated from the `textOutput()` by a comma)
-  + add `"att_period"` inside `plotOutput()`
++ delete everything inside `fluidPage()`
++ add `plotOutput()` to the UI
++ add `"att_period"` inside `plotOutput()`
++ delete everything inside `server()`'s curly brackets
 + add `renderPlot()` to the server, assigned to `output$att_period`
++ add some code inside `renderPlot()` - suggestion ahoy
+. . .
 
-#### Code snippet inside the `renderPlot()`
+## Code snippet inside the `renderPlot()`
 
 ```{r}
 ae_attendances %>%
@@ -160,9 +201,13 @@ ae_attendances %>%
 
 ## Add a data table
 
-Let's add a data table, using `dataTableOutput()` and `renderDataTable()`
+Let's follow the same process again to try adding a data table:
 
-#### Code snippet inside `renderDataTable()`
++ scrub out the `fluidPage()` and `server()`
++ add `dataTableOutput()` and `renderDataTable()` to the right places
++ add some code generating a table of data (again, suggestion ahead)
+
+## Code snippet inside `renderDataTable()`
 
 ```{r}
 ae_attendances %>%
@@ -173,17 +218,33 @@ ae_attendances %>%
 
 (MILESTONE 06)
 
-This is all very static. Let's try to add some interactivity...
+
+
+## Exercise
+
+1. Please start a new Shiny (use the snippet!)
+2. using mtcars or whatever data you fancy, please make:
+    1. a numeric summary of something
+    2. a graphical summary of something
+    3. a tabular summary of something
+3. see if you can recall how to add these to your shiny
+    1. `🤷Output()` in the UI
+    2. `render🤷()` in the server
 
 ## User input
 
-There are many ways to collect user input in Shiny. We'll start with something simple to allow our user to choose an org. We'll need to add three things:
++ this is all very static. Let's try to add some interactivity...
++ there are many ways to collect user input in Shiny
++ let's allow users to choose an org
++ we'll need to add three things:
+
+. . .
 
 + a vector of orgs for the user to choose from
 + `radioButtons()` function in the `ui()`
 + an update to the `server()` to capture the chosen org
 
-#### orgs
+## orgs
 Add the vector in the head of your `app.R`: 
 
 ```{r}
@@ -233,6 +294,6 @@ Don't forget to run your app
 
 + adding extra user input elements
 + doing more interesting things with our R code
-+ building out our dashboard project
++ building out some dashboard-like examples
 
-
+<!-- secret sauce -->

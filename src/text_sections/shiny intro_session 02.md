@@ -1,10 +1,9 @@
-## Session goal: make the dashboard more useful
 
 ## Session learning outcomes
 
 + consolidate session one
   + Shiny structure
-  + function pairs (`render*()` and `output*()`)
+  + function pairs (`render🤷()` and `🤷Output()`)
   + input options
 + extend those skills across `ui()` and `server()` 
   + additional input selections
@@ -20,14 +19,48 @@ Let's start again with an empty Shiny app. During this session, we'll build this
 + includes a national average benchmark
 + and uses several kinds of interactivity
 
+## about ae_attendances
+
+```{r}
+#| echo: false
+#| eval: true
+library(pacman)
+p_load(NHSRdatasets, tidyverse)
+ae_attendances |>
+  slice(1:5) |>
+  knitr::kable()
+
+```
+
+## about ae_attendances
+
+```{r}
+#| echo: false
+#| eval: true
+
+ae_attendances |>
+  filter(org_code == "RF4") |>
+  ggplot(aes(x=period, y=attendances, color=type)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ type, nrow=1, scales="free") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+  
+```
+
 (MILESTONE 01)
 
 ## Input options
 
 Time for the [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
 
+. . .
+
 + `checkboxGroupInput()`
 + `radioButtons()`
+
+. . .
 
 Arguments:
 
@@ -70,7 +103,7 @@ What do we need to add to include a static version of the graph in our dashboard
 
 (MILESTONE 03)
 
-Note this is not interactive - we've just put the static R code into the `server()`
+Just put the static R code into the `server()`
 
 ## Adding interactivity
 
@@ -95,26 +128,71 @@ Typing values for users to select from is tedious. Can we cheat to get R to do t
 
 We could do something similar for the orgs too, which we'll do later.
 
-## Adding a national benchmark
+## Digression - development cycle in Shiny
 
-+ get the R code working
-+ add that code to `server()`
-+ add `ui()` options
++ get some R code working in a script
++ add that code to `server()` to run statically
++ add `ui()` options and link to `server()` to add interactivity
 + test
++ repeat
+
+## Debugging
+
+(see [*Mastering Shiny* chapter 5](https://mastering-shiny.org/action-workflow.html#debugging), or the [Debugging Shiny](https://shiny.posit.co/r/articles/improve/debugging/) page)
+
++ error messages in your output
++ call stack
++ print debugging
++ `browser()`
+
+(MILESTONE 06)
+
+## Error messages
+
+![](../src/images/error_msg.png)
+
+
+## Call stack / traceback
+
+![](../src/images/call_stack.png)
+
+
+(MILESTONE 07)
+
+
+## Print debugging
+![](../src/images/print_debugging.png)
+
+
+## `browser()`
 
 (MILESTONE 08)
+
+## Adding a national benchmark
+
++ we'll need to write some R code to
+    + take our data
+    + filter for type == 1
+    + calculate mean attendances for each month
+
+(MILESTONE 09)
 
 ## Adding the benchmark code to `server()`
 
 + We only want the benchmark to update when we switch type
 + to do that, we'll use `reactive()`
 
+. . .
+
 To make a `reactive()`:
+
 ```{!r}
 benchmark <- reactive({
 <<code>>
 })
 ```
+
+. . .
 
 To use a `reactive()`:
 
@@ -138,6 +216,8 @@ Lots going on here!
 
 + set-up a vector of key orgs where data is available for all the months and add to UI using checkboxGroupInput
 
+. . .
+
 ```{r}
 key_orgs <- ae_attendances %>%
   group_by(period, org_code) %>%
@@ -156,7 +236,7 @@ key_orgs <- ae_attendances %>%
 
 ## Finishing touches
 
-Conditional execution for our benchmark
+Conditional execution for our benchmark might be a nice touch?
 
   + add `checkboxInput()` to `ui()`
   + add a new `reactive()` object from that input
@@ -167,11 +247,6 @@ Conditional execution for our benchmark
 (MILESTONE 08)
 
 ## Next time...
-+ outsourcing more complicated R code to a script
-+ thinking about UI design
++ project architecture and managing complexity in Shiny
 
-
-
-
-
-
+<!-- secret sauce -->
