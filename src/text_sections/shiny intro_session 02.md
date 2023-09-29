@@ -143,7 +143,7 @@ We could do something similar for the orgs too, which we'll do later.
 + error messages in your output
 + call stack
 + print debugging
-+ `browser()`
++ `browser()`, breakpoints, and `reactlog()`
 
 (MILESTONE 06)
 
@@ -170,7 +170,7 @@ We could do something similar for the orgs too, which we'll do later.
 
 ## Adding a national benchmark
 
-+ we'll need to write some R code to
++ we'll need to write some R code to:
     + take our data
     + filter for type == 1
     + calculate mean attendances for each month

@@ -1,18 +1,28 @@
-library(pacman)
-p_load(shiny, tidyverse, NHSRdatasets)
+library(shiny)
+library(tidyverse)
+# library(reactlog)
+# reactlog_enable()
 
 ui <- fluidPage(
-  selectInput("input", "Pick a number", c(1, 2, "3")),
-  p("Your number is ", textOutput("text1", inline=T))
+  
+  radioButtons("cylz", "Which cyl?", c(4, 6, 8, 12), selected=12),
+  
+  plotOutput("carz")
 )
 
 server <- function(input, output, session) {
-  browser()
-    output$text1 <- renderText(
-    if(input$input %% 2 == 0) {
-      "even"
-    } else {
-      "odd"
-    }
-  )
+  
+  output$carz <- renderPlot({
+    
+    car_dat <- mtcars |>
+      filter(cyl == input$cylz) 
+    
+    # browser()
+    
+    car_dat |>
+      ggplot() +
+      geom_point(aes(x=wt, y=hp, color=factor(cyl)))
+  })
 }
+
+shinyApp(ui, server)
